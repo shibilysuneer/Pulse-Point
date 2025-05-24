@@ -1,9 +1,9 @@
-
+// import React from 'react'
 import loginBg from '../../assets/bloodpulse.jpg'; 
 
-function Signin() {
+const HospitalSignin = () => {
   return (
-    <div
+ <div
       className="min-h-screen bg-no-repeat bg-cover bg-center flex flex-col justify-between"
       style={{ backgroundImage: `url(${loginBg})` }}
     >
@@ -22,15 +22,13 @@ function Signin() {
           />
           <div className="flex justify-between text-sm mb-4 text-gray-600">
             <a href="#">Forgot your Password?</a>
-            <a href="/admin/signup">Create an Account</a>
+            <a href="/hospital/signup">Create an Account</a>
           </div>
           <button className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-full">Login</button>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Signin;
-
-
+export default HospitalSignin

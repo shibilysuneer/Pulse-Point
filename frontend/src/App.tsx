@@ -1,8 +1,8 @@
 import { BrowserRouter ,Route,Routes} from "react-router-dom"
-import Signin from "./pages/adminPages/Signin"
-import Signup from "./pages/adminPages/Signup"
 import Header from "./components/admin/Header"
 import Footer from "./components/admin/Footer"
+import AdminRoutes from "./routes/AdminRoutes"
+import HospitalRoutes from "./routes/hospitalRoutes"
 
 
 const App = () => {
@@ -11,9 +11,8 @@ const App = () => {
    <BrowserRouter>
   <Header/>
   <Routes>
-    <Route path='admin/signin' element={<Signin/>} />
-    <Route path='admin/signup' element={<Signup/>} />
-   
+    <Route path='/admin/*' element={<AdminRoutes/>} />
+    <Route path='/hospital/*' element={<HospitalRoutes/>}/>
   </Routes>
   <Footer/>
   </BrowserRouter>
