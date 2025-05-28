@@ -1,7 +1,7 @@
 import axios from "axios"
 import type { SignupAdminRequest,LoginRequest } from "../../types/authTypes"
 const API = axios.create({
-    baseURL:"/api/admin",
+    baseURL:import.meta.env.VITE_ADMIN_API_URL,
     withCredentials:true,
 })
 

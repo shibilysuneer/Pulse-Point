@@ -1,9 +1,14 @@
-// import React from 'react'
-// import React from 'react';
+
 import { Link, useNavigate } from 'react-router-dom';
 import loginBg from '../../assets/bloodpulse.jpg'; 
-import { useState, type ChangeEvent, type FormEvent } from 'react';
+import {useState, type ChangeEvent, type FormEvent } from 'react';
+import type { AppDispatch} from '../../redux/store';
+import { adminSignup } from '../../redux/slices/admin/adminSlice';
+import {useDispatch} from 'react-redux'
+import {toast} from 'react-toastify'
 
+
+// const {error,loading}= useSelector
 function Signup() {
 
    const [formData, setFormData] = useState({
@@ -13,6 +18,8 @@ function Signup() {
   });
   const [error, setError] = useState('');
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
+
 
   const handleChange=(e: ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -22,10 +29,13 @@ function Signup() {
     e.preventDefault();
     try {
       console.log("Signup data submitted:", formData);
-
+    const result=await dispatch(adminSignup(formData)).unwrap();
+    console.log('result',result)
+     toast.success("Signup successful! Redirecting to login...");
       navigate('/admin/signin');
-    } catch (err) {
+    } catch (err:any) {
       setError("Signup failed. Try again.");
+       toast.error("Signup failed. Please try again.");
     }
   };
   return (
