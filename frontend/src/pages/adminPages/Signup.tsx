@@ -30,9 +30,11 @@ function Signup() {
     try {
       console.log("Signup data submitted:", formData);
     const result=await dispatch(adminSignup(formData)).unwrap();
+
     console.log('result',result)
      toast.success("Signup successful! Redirecting to login...");
       navigate('/admin/signin');
+      
     } catch (err:any) {
       setError("Signup failed. Try again.");
        toast.error("Signup failed. Please try again.");
