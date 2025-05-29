@@ -34,7 +34,11 @@ export class authService implements IAdminAuthService{
 
         // const savedAdmin = await newAdmin.save();
 
-        const token = generateToken(newAdmin);
+        const token = generateToken({
+            _id:newAdmin._id,
+            email:newAdmin.email,
+            role:newAdmin.role
+        })
          return {
       admin: newAdmin,
       token
@@ -53,8 +57,11 @@ export class authService implements IAdminAuthService{
       throw new Error("Invalid password.");
     }
 
-    const token = generateToken(admin);
-
+    const token = generateToken({
+         _id: admin._id,
+         email: admin.email,
+         role: admin.role
+    })
     return {
       admin,
       token

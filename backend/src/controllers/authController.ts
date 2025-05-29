@@ -13,7 +13,7 @@ export class authController implements IAdminController{
 
     async adminSignup(req: Request, res: Response): Promise<void> {
         try {
-            console.log(req.body)
+            console.log('recieved data:',req.body)
             const {username,email,password}=req.body;
             if (!username || !email || !password) {
         res.status(400).json({ error: "All fields are required." });

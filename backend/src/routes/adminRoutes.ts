@@ -6,6 +6,6 @@ const router = express.Router()
 
 const adminController = container.get<authController>(TYPES.authController)
 
-router.post('/admin/signup',adminController.adminSignup.bind(adminController))
+router.post('/signup',adminController.adminSignup.bind(adminController))
 
 export default router;

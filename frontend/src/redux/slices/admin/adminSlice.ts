@@ -30,8 +30,10 @@ export const adminSignup = createAsyncThunk(
   async (data: SignupAdminRequest, { rejectWithValue }) => {
     try {
       const response = await signupAdmin(data);
+      console.log("signupAdmin response:", response);
       return response;
     } catch (error: any) {
+       console.error("err", error);
       return rejectWithValue(error.response?.data?.message || "Signup failed");
     }
   }

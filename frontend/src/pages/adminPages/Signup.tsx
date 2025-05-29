@@ -31,13 +31,15 @@ function Signup() {
       console.log("Signup data submitted:", formData);
     const result=await dispatch(adminSignup(formData)).unwrap();
 
-    console.log('result',result)
+    console.log('result:',result)
      toast.success("Signup successful! Redirecting to login...");
       navigate('/admin/signin');
-      
+
     } catch (err:any) {
-      setError("Signup failed. Try again.");
-       toast.error("Signup failed. Please try again.");
+       console.error("Signup error object:", err);
+      const message = err.response?.data?.error ||"Signup failed.try again"
+      setError(message);
+       toast.error(message);
     }
   };
   return (
