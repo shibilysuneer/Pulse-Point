@@ -2,6 +2,10 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react';
 import loginBg from '../../assets/bloodpulse.jpg'; 
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '../../redux/store';
+import { adminLogin } from '../../redux/slices/admin/adminSlice';
+import { toast } from 'react-toastify';
 
 function Signin() {
   const [formData,setFormData] = useState({
@@ -9,8 +13,10 @@ function Signin() {
     password:'',
   })
    const [error, setError] = useState<string>("");
+   const dispatch = useDispatch<AppDispatch>()
   const navigate =useNavigate();
   
+  const {loading} = useSelector((state:RootState) => state.admin)
    
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -19,10 +25,15 @@ function Signin() {
 
  
   const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); 
+    e.preventDefault();
+     setError(''); 
       try {
-      
-      navigate('/admin/dashboard');
+        console.log("login data submitted:", formData);
+      const result = await dispatch(adminLogin(formData)).unwrap();
+      console.log('login result:',result);
+      localStorage.setItem('adminToken', result.token); 
+      toast.success('Login successfull')
+      navigate('/admin/home');
     } catch (err) {
       setError('Invalid email or password');
     } 
@@ -63,7 +74,9 @@ function Signin() {
             Create an account
             </Link>
           </div>
-          <button  type="submit" className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-full">Login</button>
+          <button  type="submit"  disabled={loading} className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-full">
+             {loading ? 'Logging in...' : 'Login'}
+            </button>
         {/* </div> */}
          </form>
       </div>

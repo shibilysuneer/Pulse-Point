@@ -19,8 +19,10 @@ export const adminLogin = createAsyncThunk(
     async(data:LoginRequest,{rejectWithValue})=>{
         try {
             const response=await loginAdmin(data);
+            console.log("loginAdmin response:", response);
             return response;
         } catch (error:any) {
+          console.error("err", error);
             return rejectWithValue(error.response?.data?.message||"Login Failed")
         }
     }
