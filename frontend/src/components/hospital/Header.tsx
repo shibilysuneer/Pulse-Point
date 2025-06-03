@@ -11,9 +11,10 @@ function Header() {
       <div className="text-red-600 font-bold text-lg">🩸 PULSE POINT</div>
       <nav className="flex space-x-12 text-gray-500 font-medium font-mono uppercase tracking-wide">
         <a href="#">HOME</a>
-        <a href="#">DONORS</a>
-        <a href="#">HOSPITALS</a>
-        <a href="#">CAMPAIGN</a>
+        <a href="#">NEED BLOOD</a>
+        <a href="#">DONOR</a>
+        <a href="#">NOTIFICATION</a>
+        <a href="#">REQUESTERS</a>
         <a href="#">SUBSCRIPTION</a>
 
       </nav>
