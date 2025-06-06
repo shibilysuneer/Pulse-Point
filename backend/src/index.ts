@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import adminRoutes from "./routes/adminRoutes"
+import hospitalRoutes from './routes/hospitalRoutes'
 import connectDB from "./config/db"
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
@@ -21,6 +22,8 @@ app.use(cors({
 }))
 
 app.use("/api/admin",adminRoutes)
+app.use("/api/hospital",hospitalRoutes)
+
 
 app.listen(3000,()=>{
     console.log("server running port 3000...");
