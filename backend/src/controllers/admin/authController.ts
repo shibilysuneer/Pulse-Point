@@ -1,8 +1,8 @@
 import { Request,Response } from "express";
 import { inject,injectable } from "inversify";
-import { IAdminController } from "./admin/interface/IAuthController";
-import TYPES from "../config/inversify/types";
-import { IAdminAuthService } from "../services/admin/interface/IAuthService";
+import { IAdminController } from "./interface/IAuthController";
+import TYPES from "../../config/inversify/types";
+import { IAdminAuthService } from "../../services/admin/interface/IAuthService";
 
 @injectable()
 export class authController implements IAdminController{

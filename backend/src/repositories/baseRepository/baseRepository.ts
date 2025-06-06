@@ -3,7 +3,7 @@ import IBaseRepository from "./interface/IBaseRepository";
 
 
 export class BaseRepository<T extends Document> implements IBaseRepository<T> {
-  constructor(private readonly model: Model<T>) {}
+  constructor(protected readonly model: Model<T>) {}
 
   async create(data: Partial<T>): Promise<T> {
     return this.model.create(data);

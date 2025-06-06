@@ -1,5 +1,5 @@
 import express from "express";
-import { authController } from "../controllers/authController";
+import { authController } from "../controllers/admin/authController";
 import container from "../config/inversify/container";
 import TYPES from "../config/inversify/types";
 const router = express.Router()
