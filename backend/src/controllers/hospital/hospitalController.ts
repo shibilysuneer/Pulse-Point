@@ -68,4 +68,23 @@ export class HospitalController implements IHospitalController {
       res.status(401).json({ error: "Invalid token" });
     }
   }
+
+  async googleLogin(req: Request, res: Response): Promise<void> {
+  try {
+    console.log("body", req.body);
+    const { email, name,googleId } = req.body;
+
+    if (!email) {
+      res.status(400).json({ error: "Email required." });
+      return;
+    }
+
+    const hospital = await this.hospitalAuthService.googleLogin({ email, name,googleId });
+
+    res.status(200).json(hospital);
+  } catch (error: any) {
+    console.error("Google Login Error:", error);
+    res.status(400).json({ error: error.message || "Google login failed" });
+  }
+}
 }

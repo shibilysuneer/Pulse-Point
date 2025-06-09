@@ -9,13 +9,16 @@ export const hospitalSchema:Schema<IHospitalDocument> = new Schema({
      required: true,
       unique: true },
   password: 
-  { type: String,
-     required: true },
+  {  type: String,
+    required: function () {
+      return !this.isGoogleAuth;
+    }, },
   isGoogleAuth: 
   { type: Boolean,
      default: false }, 
     phone: 
     { type: String },
+     googleId: { type: String },
    address: { type: String },
 }, { timestamps: true });
 

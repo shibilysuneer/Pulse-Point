@@ -4,4 +4,6 @@ export interface IHospitalController {
   hospitalSignup(req: Request, res: Response): Promise<void>;
   hospitalLogin(req: Request, res: Response): Promise<void>;
   verifyToken(req: Request, res: Response): Promise<void>;
+  googleLogin(req: Request, res: Response): Promise<void>;
+
 }

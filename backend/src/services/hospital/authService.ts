@@ -73,15 +73,16 @@ export class HospitalAuthService implements IAuthService {
 
   async googleLogin(googleData: HospitalGoogleLoginRequest
   ): Promise<HospitalGoogleLoginResponse> {
-     const { email, name } = googleData;
+     const { email } = googleData;
     
     let hospital = await this.hospitalRepository.findByEmail(email);
 
     if (!hospital) {
       hospital = await this.hospitalRepository.create({
-        name,
+         name:'Google User',
         email,
         isGoogleAuth: true,
+        // googleId,
         createdAt: new Date(),
       });
     }

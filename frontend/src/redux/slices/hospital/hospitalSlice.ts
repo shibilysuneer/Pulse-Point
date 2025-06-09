@@ -1,6 +1,8 @@
 import { createAsyncThunk,createSlice } from "@reduxjs/toolkit";
-import type { LoginRequest, SignupHospitalRequest } from "../../../types/authTypes";
+import type { GoogleLoginReq, LoginRequest, SignupHospitalRequest } from "../../../types/authTypes";
 import { loginHospital,signupHospital } from "../../../services/hospital/authService";
+import {auth,googleProvider} from '../../../config/firebase'
+import { googleLoginHospital } from "../../../services/hospital/authService";
 
 interface HospitalState {
   hospital: any;
@@ -41,7 +43,17 @@ export const hospitalSignup = createAsyncThunk(
     }
   }
 );
-
+export const hospitalGoogleLogin = createAsyncThunk(
+  'hospital/googleLogin',
+  async (data: GoogleLoginReq, { rejectWithValue }) => {
+    try {
+      const response = await googleLoginHospital(data);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Google login failed');
+    }
+  }
+);
 const hospitalSlice = createSlice({
   name: "hospital",
   initialState,
@@ -73,7 +85,24 @@ const hospitalSlice = createSlice({
       .addCase(hospitalSignup.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      });
+      })
+
+
+      .addCase(hospitalGoogleLogin.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    })
+    .addCase(hospitalGoogleLogin.fulfilled, (state, action) => {
+      state.loading = false;
+      state.hospital = action.payload;
+      state.message = "Google login successful";
+      localStorage.setItem("hospitalToken", action.payload.token);
+      localStorage.setItem("hospitalInfo", JSON.stringify(action.payload.hospital));
+    })
+    .addCase(hospitalGoogleLogin.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
   },
 });
 

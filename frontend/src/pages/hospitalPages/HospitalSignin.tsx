@@ -5,7 +5,7 @@ import { useState, type ChangeEvent, type FormEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../redux/store';
 import { toast } from 'react-toastify';
-import GoogleLogin from '../../components/admin/GoogleLogin';
+import GoogleLogin from '../../components/hospital/GoogleLogin';
 import { hospitalLogin } from '../../redux/slices/hospital/hospitalSlice';
 
 const HospitalSignin = () => {

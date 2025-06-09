@@ -25,7 +25,8 @@ export interface HospitalLoginResponse {
 
 export interface HospitalGoogleLoginRequest {
   email: string;
-  name: string;
+  name?: string;
+  googleId?: string;
 }
 
 export interface HospitalGoogleLoginResponse {

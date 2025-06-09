@@ -1,4 +1,4 @@
-import type { LoginRequest,SignupHospitalRequest } from "../../types/authTypes";
+import type { GoogleLoginReq,LoginRequest,SignupHospitalRequest } from "../../types/authTypes";
 import HospitalAPI from "../../api/HospitalAPI";
 
 export const loginHospital = async (data: LoginRequest) => {
@@ -14,3 +14,20 @@ export const signupHospital = async (data: SignupHospitalRequest) => {
   });
   return response.data;
 };
+export const googleLoginHospital = async (data: GoogleLoginReq) => {
+  const response = await HospitalAPI.post("/google-login", data);
+  console.log("googleres:",response);
+  
+  return response.data;
+};
+// export const hospitalGoogleLogin = createAsyncThunk(
+//   'hospital/googleLogin',
+//   async (data: GoogleLoginReq, { rejectWithValue }) => {
+//     try {
+//       const response = await googleLoginHospital(data);
+//       return response;
+//     } catch (error: any) {
+//       return rejectWithValue(error.response?.data?.message || 'Google login failed');
+//     }
+//   }
+// );

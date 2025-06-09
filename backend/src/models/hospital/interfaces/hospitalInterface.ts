@@ -10,6 +10,7 @@ export interface IHospital{
   isGoogleAuth?: boolean;
   createdAt?: Date;
   updatedAt?: Date;
+  googleId?: string;
 }
 export interface IHospitalDocument extends IHospital,Document{
     _id:Types.ObjectId;
