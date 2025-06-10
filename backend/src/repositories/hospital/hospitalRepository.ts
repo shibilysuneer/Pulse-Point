@@ -15,4 +15,13 @@ export class HospitalRepository extends BaseRepository<IHospitalDocument>{
     const hospital = new Hospital(data);
     return await hospital.save();
   }
+  async updatePassword(email: string, hashedPassword: string): Promise<void> {
+    const hospital = await this.model.findOne({ email });
+    if (!hospital) {
+        throw new Error("Hospital not found");
+    }
+    hospital.password = hashedPassword;
+    await hospital.save();
+}
+
 }

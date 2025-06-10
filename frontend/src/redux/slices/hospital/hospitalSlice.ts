@@ -1,7 +1,10 @@
 import { createAsyncThunk,createSlice } from "@reduxjs/toolkit";
 import type { GoogleLoginReq, LoginRequest, SignupHospitalRequest } from "../../../types/authTypes";
-import { loginHospital,signupHospital } from "../../../services/hospital/authService";
-import {auth,googleProvider} from '../../../config/firebase'
+import { loginHospital,signupHospital,
+  sendOtpHospital,resendOtpHospital,
+  verifyOtpHospital,verifyPasswordHospital
+ } from "../../../services/hospital/authService";
+// import {auth,googleProvider} from '../../../config/firebase'
 import { googleLoginHospital } from "../../../services/hospital/authService";
 
 interface HospitalState {
@@ -54,6 +57,52 @@ export const hospitalGoogleLogin = createAsyncThunk(
     }
   }
 );
+export const sendOtp = createAsyncThunk(
+  "hospital/sendOtp",
+  async (email: string, { rejectWithValue }) => {
+    try {
+      const response = await sendOtpHospital(email);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to send OTP");
+    }
+  }
+);
+export const resendOtp = createAsyncThunk(
+  "hospital/resendOtp",
+  async (email: string, { rejectWithValue }) => {
+    try {
+      const response = await resendOtpHospital(email);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Failed to resend OTP");
+    }
+  }
+);
+
+export const verifyOtp = createAsyncThunk(
+  "hospital/verifyOtp",
+  async ({ email, otp }: { email: string; otp: string }, { rejectWithValue }) => {
+    try {
+      const response = await verifyOtpHospital(email, otp);
+      return response
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "OTP verification failed");
+    }
+  }
+);
+
+export const verifyPassword = createAsyncThunk(
+  "hospital/verifyPassword",
+  async ({ email,otp, password }: { email: string;otp: string; password: string }, { rejectWithValue }) => {
+    try {
+      const response = await verifyPasswordHospital(email,otp, password);
+      return response
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || "Password reset failed");
+    }
+  }
+);
 const hospitalSlice = createSlice({
   name: "hospital",
   initialState,
@@ -102,7 +151,64 @@ const hospitalSlice = createSlice({
     .addCase(hospitalGoogleLogin.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
-    });
+    })
+
+    // Send OTP
+.addCase(sendOtp.pending, (state) => {
+  state.loading = true;
+  state.error = null;
+})
+.addCase(sendOtp.fulfilled, (state, action) => {
+  state.loading = false;
+  state.message = action.payload.message || "OTP sent";
+})
+.addCase(sendOtp.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload as string;
+})
+
+// Resend OTP
+.addCase(resendOtp.pending, (state) => {
+  state.loading = true;
+  state.error = null;
+})
+.addCase(resendOtp.fulfilled, (state, action) => {
+  state.loading = false;
+  state.message = action.payload.message || "OTP resent";
+})
+.addCase(resendOtp.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload as string;
+})
+
+// Verify OTP
+.addCase(verifyOtp.pending, (state) => {
+  state.loading = true;
+  state.error = null;
+})
+.addCase(verifyOtp.fulfilled, (state, action) => {
+  state.loading = false;
+  state.message = action.payload.message || "OTP verified";
+})
+.addCase(verifyOtp.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload as string;
+})
+
+// Verify Password
+.addCase(verifyPassword.pending, (state) => {
+  state.loading = true;
+  state.error = null;
+})
+.addCase(verifyPassword.fulfilled, (state, action) => {
+  state.loading = false;
+  state.message = action.payload.message || "Password reset successful";
+})
+.addCase(verifyPassword.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload as string;
+})
+
   },
 });
 

@@ -87,4 +87,71 @@ export class HospitalController implements IHospitalController {
     res.status(400).json({ error: error.message || "Google login failed" });
   }
 }
+async sendOtp(req: Request, res: Response): Promise<void> {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      res.status(400).json({ error: "Email is required." });
+      return;
+    }
+
+    const response = await this.hospitalAuthService.sendOtp(email);
+    res.status(200).json({ message: response });
+  } catch (error: any) {
+    console.error("Send OTP Error:", error);
+    res.status(500).json({ error: error.message || "Failed to send OTP." });
+  }
+}
+
+ async resendOtp(req: Request, res: Response): Promise<void> {
+    try {
+      const { email } = req.body;
+
+      if (!email) {
+        res.status(400).json({ error: "Email is required." });
+        return;
+      }
+
+      const response = await this.hospitalAuthService.resendOtp(email);
+      res.status(200).json({ message: response });
+    } catch (error: any) {
+      console.error("Resend OTP Error:", error);
+      res.status(500).json({ error: error.message || "Failed to resend OTP." });
+    }
+  }
+  async verifyOtp(req: Request, res: Response): Promise<void> {
+    try {
+      const { email, otp } = req.body;
+
+      if (!email || !otp) {
+        res.status(400).json({ error: "Email and OTP are required." });
+        return;
+      }
+
+      const isVerified = await this.hospitalAuthService.verifyOtp({email, otp});
+      res.status(200).json({ verified: isVerified });
+    } catch (error: any) {
+      console.error("Verify OTP Error:", error);
+      res.status(400).json({ error: error.message || "OTP verification failed." });
+    }
+  }
+
+  async resetPassword(req: Request, res: Response): Promise<void> {
+    try {
+      const { email, otp, newPassword } = req.body;
+
+      if (!email || !otp || !newPassword) {
+        res.status(400).json({ error: "Email, OTP, and new password are required." });
+        return;
+      }
+
+      const result = await this.hospitalAuthService.resetPassword({email, newPassword});
+      res.status(200).json({ message: result });
+    } catch (error: any) {
+      console.error("Reset Password Error:", error);
+      res.status(400).json({ error: error.message || "Failed to reset password." });
+    }
+  }
+
 }

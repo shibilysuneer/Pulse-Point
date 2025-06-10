@@ -20,6 +20,48 @@ export const googleLoginHospital = async (data: GoogleLoginReq) => {
   
   return response.data;
 };
+export const sendOtpHospital = async(email:string) => {
+  try {
+    const response = await HospitalAPI.post("/send-otp", { email })
+     console.log("response",response);
+    return response.data; 
+  } catch (error:any) {
+    console.log("err",error);
+  }
+}
+export const resendOtpHospital = async(email:string) => {
+  try {
+    const response = await HospitalAPI.post("/resend-otp", { email })
+     console.log("response",response);
+    return response.data; 
+  } catch (error:any) {
+    console.log("err",error);
+  }
+}
+export const verifyOtpHospital = async(email:string, otp: string) => {
+  try {
+    const response = await HospitalAPI.post("/verify-otp", { email,otp })
+     console.log("response:",response);
+    return response.data; 
+  } catch (error:any) {
+    console.log("err",error);
+  }
+}
+export const verifyPasswordHospital  = async(email:string, otp: string, password: string) => {
+  try {
+    const response = await HospitalAPI.post("/reset-password", {
+      email,
+      otp,
+      newPassword:password,
+    })
+     console.log("response==",response);
+    return response.data; 
+  } catch (error:any) {
+    console.log("err",error);
+  }
+}
+
+
 // export const hospitalGoogleLogin = createAsyncThunk(
 //   'hospital/googleLogin',
 //   async (data: GoogleLoginReq, { rejectWithValue }) => {

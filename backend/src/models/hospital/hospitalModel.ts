@@ -7,7 +7,7 @@ export const hospitalSchema:Schema<IHospitalDocument> = new Schema({
   email:
    { type: String,
      required: true,
-      unique: true },
+       },
   password: 
   {  type: String,
     required: function () {

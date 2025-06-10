@@ -65,11 +65,10 @@ const HospitalSignin = () => {
             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
           />
           <div className="flex justify-between text-sm mb-4 text-gray-600">
-            <a href="#">Forgot your Password?</a>
+            <a href="/hospital/forgotPassword" className='hover:underline'>Forgot your Password?</a>
              <Link to='/hospital/signup'className='text-black-600 '>
             Create an account
             </Link>
-            {/* <a href="/hospital/signup">Create an Account</a> */}
           </div>
           <button  type="submit"
             disabled={loading} className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-full">
