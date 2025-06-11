@@ -18,6 +18,7 @@ const HospitalSignin = () => {
    const navigate = useNavigate()
    const {loading} = useSelector((state:RootState)=>state.hospital)
 
+   
    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
