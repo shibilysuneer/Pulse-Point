@@ -27,6 +27,16 @@ function Signin() {
   const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
      setError(''); 
+
+      if (!formData.email || !formData.password) {
+    setError('All fields are required');
+    return;
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(formData.email)) {
+    setError('Invalid email format');
+    return;
+  }
       try {
         console.log("login data submitted:", formData);
       const result = await dispatch(adminLogin(formData)).unwrap();
@@ -54,7 +64,6 @@ function Signin() {
             value={formData.email}
             onChange={handleChange}
             placeholder="Email"
-            required
             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
           />
          
@@ -64,7 +73,7 @@ function Signin() {
             value={formData.password}
             onChange={handleChange}
             placeholder="Password"
-            required
+            
             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
           />
           <div className="flex justify-between text-sm mb-4 text-gray-600">

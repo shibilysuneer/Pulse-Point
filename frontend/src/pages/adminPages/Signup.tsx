@@ -27,6 +27,26 @@ function Signup() {
   }
    const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+     setError('');
+
+  const { username, email, password } = formData;
+  if (!username || !email || !password) {
+    setError('All fields are required');
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    setError('Invalid email format');
+    return;
+  }
+
+  if (password.length < 6) {
+    setError('Password must be at least 6 characters');
+    return;
+  }
+
+  
     try {
       console.log("Signup data submitted:", formData);
     const result=await dispatch(adminSignup(formData)).unwrap();
