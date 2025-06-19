@@ -1,16 +1,16 @@
 import { Route,Routes } from "react-router-dom";
 import Signin from "../pages/adminPages/Signin"
-import Signup from "../pages/adminPages/Signup";
 import AdminHome from "../pages/adminPages/AdminHome";
 import AdminPrivateRoute from "../components/admin/AdminPrivateRoute";
 import ProtectedAuthRoute from "../components/admin/ProtectAuthRoute";
+import ForgotPassword from "../pages/adminPages/ForgotPassword";
 
 const AdminRoutes =() => {
     return (
         <Routes>
             <Route element={<ProtectedAuthRoute />}>
            <Route path="/signin" element={<Signin/>}/> 
-           <Route path="/signup" element={<Signup/>}/>
+           <Route path="/forgot" element={<ForgotPassword/>}/>
         </Route>
            {/* <Route path="/home" element={<AdminHome/>}/> 
            //   */}

@@ -15,9 +15,9 @@ export class HospitalController implements IHospitalController {
   async hospitalSignup(req: Request, res: Response): Promise<void> {
     try {
       console.log("Received data:", req.body);
-      const { username, email, password } = req.body;
+      const { username, email, password ,registrationNumber} = req.body;
 
-      if (!username || !email || !password) {
+      if (!username || !email || !password ||!registrationNumber) {
         res.status(400).json({ error: "All fields are required." });
         return;
       }
@@ -26,6 +26,7 @@ export class HospitalController implements IHospitalController {
        name: username,
         email,
         password,
+        registrationNumber,
       });
 
       res.status(201).json(hospital);

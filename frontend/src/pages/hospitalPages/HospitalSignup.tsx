@@ -11,7 +11,9 @@ const HospitalSignup = () => {
     const [formData, setFormData] = useState({
     username: '',
     email: '',
-    password: ''
+    password: '',
+    phone: '',
+    registrationNumber: '',
   });
    const [error, setError] = useState<string>('');
   const dispatch = useDispatch<AppDispatch>();
@@ -31,7 +33,13 @@ const HospitalSignup = () => {
       toast.success('Signup successful');
       navigate('/hospital/home');
     } catch (error:any) {
-       setError('Signup failed. Please try again.');
+      //  setError('Signup failed. Please try again.');
+       const errorMessage =
+       error?.response?.data?.message || error?.message || 'Signup failed. Please try again.';
+      
+    setError(errorMessage); // Optional: shows under the form
+    toast.error(errorMessage);
+
     }
 
    }
@@ -61,7 +69,7 @@ const HospitalSignup = () => {
           <input
             type="email"
             placeholder="Email"
-             name="email"
+            name="email"
             value={formData.email}
             onChange={handleChange}
             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
@@ -74,7 +82,23 @@ const HospitalSignup = () => {
             onChange={handleChange}
             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
           />
-          
+           <input
+            type="text"
+            placeholder="Phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
+          />
+
+          <input
+            type="text"
+            placeholder="Registration Number"
+            name="registrationNumber"
+            value={formData.registrationNumber}
+            onChange={handleChange}
+            className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
+          />
           <div className="flex justify-between text-sm mb-4 text-gray-600">
             {/* <a href="/hospital/signin">Already have an account?Sign in</a> */}
              <Link to="/hospital/signin" className="text-black-600">

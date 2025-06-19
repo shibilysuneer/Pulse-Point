@@ -24,7 +24,7 @@ export class HospitalAuthService implements IAuthService {
         
     ){}
     async signup(hospitalData:HospitalSignupRequest):Promise<HospitalSignupResponse>{
-        const {email,password,name}=hospitalData;
+        const {email,password,name,registrationNumber}=hospitalData;
 
         const existingHospital = await this.hospitalRepository.findByEmail(email);
     if (existingHospital) {
@@ -37,11 +37,14 @@ export class HospitalAuthService implements IAuthService {
       email,
       password: hashedPassword,
       createdAt: new Date(),
+      registrationNumber,
+      role: "hospital",
     });
 
     const token = generateToken({
       _id: newHospital._id,
       email: newHospital.email,
+      
     });
      return {
       hospital: newHospital,
@@ -57,7 +60,6 @@ export class HospitalAuthService implements IAuthService {
     if (!hospital) {
       throw new Error("Hospital not found");
     }
-
     const isMatch = await bcrypt.compare(password, hospital.password!);
     if (!isMatch) {
       throw new Error("Invalid password");
@@ -87,6 +89,7 @@ export class HospitalAuthService implements IAuthService {
         isGoogleAuth: true,
         // googleId,
         createdAt: new Date(),
+        role: "hospital",
       });
     }
 

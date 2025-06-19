@@ -6,6 +6,7 @@ export interface HospitalSignupRequest {
   password: string;
   phone?: string;
   address?: string;
+  registrationNumber?:string;
 }
 
 export interface HospitalSignupResponse {
@@ -34,37 +35,3 @@ export interface HospitalGoogleLoginResponse {
   token: string;
 }
 
-
-// export interface HospitalSignupRequest {
-//   name: string;
-//   email: string;
-//   password: string;
-//   phone?: string;
-//   address?: string;
-// }
-
-// export interface HospitalLoginRequest {
-//   email: string;
-//   password: string;
-// }
-
-// export interface HospitalGoogleLoginRequest {
-//   email: string;
-//   name: string;
-// }
-
-// export interface HospitalResponse {
-//   _id: string;
-//   name: string;
-//   email: string;
-//   phone?: string;
-//   address?: string;
-//   isGoogleAuth?: boolean;
-//   createdAt?: string;
-//   updatedAt?: string;
-// }
-
-// export interface AuthResponse {
-//   token: string;
-//   hospital: HospitalResponse;
-// }

@@ -1,7 +1,6 @@
 import IBaseRepository from "../../baseRepository/interface/IBaseRepository";
-import { IAdminDocument } from "../../../models/admin/interfaces/adminInterface";
-// import { BaseRepository } from "../../baseRepository/baseRepository";
+import { IHospitalDocument } from "../../../models/hospital/interfaces/hospitalInterface";
 
-export  interface IAdminRepository extends IBaseRepository<IAdminDocument>{
-  findByEmail(email:string):Promise<IAdminDocument |null>;
+export  interface IAdminRepository extends IBaseRepository<IHospitalDocument>{
+  findByEmail(email:string):Promise<IHospitalDocument |null>;
 }

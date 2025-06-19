@@ -1,19 +1,13 @@
-import { IAdminDocument } from "../../models/admin/interfaces/adminInterface";
+
+import { IHospitalDocument } from "../../models/hospital/interfaces/hospitalInterface";
 
 export interface AdminLoginRequest {
      email: string;
     password: string;
+  
 }
 export interface AdminLoginResponse {
-    admin:IAdminDocument;
+    admin:IHospitalDocument;
     token:string;
 }
-  export interface AdminSignupRequest{
-    username : string;
-    email: string;
-    password: string;
-  }
-   export interface AdminSignupResponse{
-    admin:IAdminDocument;
-    token:string;
-   }
+ 

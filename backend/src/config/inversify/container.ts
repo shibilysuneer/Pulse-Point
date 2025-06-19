@@ -1,7 +1,7 @@
 import { Container } from "inversify";
 import TYPES from "./types";
 
-//imp
+
 import { authService } from "../../services/admin/authService"
 import { IAdminAuthService } from "../../services/admin/interface/IAuthService";
 

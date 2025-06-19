@@ -1,20 +1,20 @@
 
 import { injectable } from "inversify";
 import { BaseRepository } from "../baseRepository/baseRepository";
-import { AdminModel } from "../../models/admin/adminModal";
-import { IAdminDocument } from "../../models/admin/interfaces/adminInterface";
 import {IAdminRepository} from "./interface/IAdminRepository";
+import { IHospitalDocument } from "../../models/hospital/interfaces/hospitalInterface";
+import Hospital from "../../models/hospital/hospitalModel";
 
 @injectable()
-export class AdminRepository extends BaseRepository<IAdminDocument> implements IAdminRepository {
+export class AdminRepository extends BaseRepository<IHospitalDocument> implements IAdminRepository {
   constructor() {
-    super(AdminModel);
+    super(Hospital);
   }
 
-  async getAdminId(adminId: string): Promise<IAdminDocument | null> {
-    return await AdminModel.findOne({ adminId }).lean();
+  async getAdminId(adminId: string): Promise<IHospitalDocument | null> {
+    return await Hospital.findOne({ adminId }).lean();
   }
-  async findByEmail(email: string): Promise<IAdminDocument | null> {
-    return await AdminModel.findOne({ email }).lean();
+  async findByEmail(email: string): Promise<IHospitalDocument | null> {
+    return await Hospital.findOne({  email }).lean();
   }
 }

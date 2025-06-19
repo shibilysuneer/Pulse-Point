@@ -41,11 +41,12 @@ function Signin() {
         console.log("login data submitted:", formData);
       const result = await dispatch(adminLogin(formData)).unwrap();
       console.log('login result:',result);
-      localStorage.setItem('adminToken', result.token); 
       toast.success('Login successfull')
       navigate('/admin/home');
-    } catch (err) {
-      setError('Invalid email or password');
+    } catch (err:any) {
+      console.error('Login error:', err);
+      setError( 'Something went wrong');
+      // toast.error(err);
     } 
     }
 
@@ -77,11 +78,9 @@ function Signin() {
             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
           />
           <div className="flex justify-between text-sm mb-4 text-gray-600">
-            <a href="#">Forgot your Password?</a>
-            {/* <a href="/admin/signup">Create an Account</a> */}
-            <Link to='/admin/signup'className='text-black-600 '>
-            Create an account
-            </Link>
+            <Link to="/admin/forgot" className="hover:underline text-black-600">
+              Forgot your Password?
+         </Link> 
           </div>
           <button  type="submit"  disabled={loading} className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-full">
              {loading ? 'Logging in...' : 'Login'}

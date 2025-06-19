@@ -20,6 +20,16 @@ export const hospitalSchema:Schema<IHospitalDocument> = new Schema({
     { type: String },
      googleId: { type: String },
    address: { type: String },
+    registrationNumber: {
+    type: String,
+    required: true, 
+  },
+   role: {
+    type: String,
+    enum: ["admin", "hospital",],
+    default: "hospital",
+    required: true
+  },
 }, { timestamps: true });
 
 const Hospital  = mongoose.model<IHospitalDocument>('Hospital', hospitalSchema);
