@@ -14,7 +14,7 @@ export const ProtectedRoute  = ({allowedRoles}:ProtectedRouteProps) => {
        return <Navigate to="/admin/signin" replace />
      }
        if (allowedRoles && !allowedRoles.includes(role || "")) {
-        return <Navigate to="/super-admin/unauthorized" replace />;
+        return <Navigate to="/admin/unauthorized" replace />;
        }
       return <Outlet />;
   // return token ? <Navigate to="/admin/home" replace /> : <Outlet />;

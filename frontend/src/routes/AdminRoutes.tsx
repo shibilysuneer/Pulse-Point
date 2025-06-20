@@ -4,6 +4,7 @@ import AdminHome from "../pages/adminPages/AdminHome";
 import AdminPrivateRoute from "../components/admin/AdminPrivateRoute";
 import ProtectedAuthRoute from "../components/admin/ProtectAuthRoute";
 import ForgotPassword from "../pages/adminPages/ForgotPassword";
+import Unauthorized from "../pages/adminPages/Unauthorized";
 
 const AdminRoutes =() => {
     return (
@@ -17,6 +18,9 @@ const AdminRoutes =() => {
           <Route element={<AdminPrivateRoute />}>
         <Route path="/home" element={<AdminHome />} />
       </Route>
+
+        <Route path="/unauthorized" element={<Unauthorized/>}/> 
+
         </Routes>
     )
 }
