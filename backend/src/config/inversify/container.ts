@@ -22,6 +22,9 @@ import { IUserAuthService } from "../../services/user/interface/IAuthService";
 import { UserController } from "../../controllers/user/userController";
 import { IUserController } from "../../controllers/user/interface/IUserController";
 import { UserRepository } from "../../repositories/user/userRepository";
+import { OtpRepository } from "../../repositories/otp/otpRepository";
+import { IOtpRepository } from "../../repositories/otp/interface/IOtpRepository";
+
 
 const container = new Container();
   
@@ -36,5 +39,6 @@ container.bind<IHospitalController>(TYPES.HospitalController).to(HospitalControl
 container.bind<IUserRepository>(TYPES.UserRepository).to(UserRepository);
 container.bind<IUserAuthService>(TYPES.UserAuthService).to(UserAuthService);
 container.bind<IUserController>(TYPES.UserController).to(UserController);
+container.bind<IOtpRepository>(TYPES.OtpRepository).to(OtpRepository);
 
 export default container;

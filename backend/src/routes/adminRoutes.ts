@@ -9,4 +9,8 @@ const adminController = container.get<authController>(TYPES.authController)
 router.post('/login',adminController.adminLogin.bind(adminController))
 router.post('/logout',adminController.adminLogout.bind(adminController))
 
+router.post('/send-otp', adminController.sendOtp.bind(adminController)); 
+router.post('/resend-otp', adminController.resendOtp.bind(adminController)); 
+router.post('/verify-otp', adminController.verifyOtp.bind(adminController)); 
+router.post('/reset-password', adminController.resetPassword.bind(adminController));
 export default router;

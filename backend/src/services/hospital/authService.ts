@@ -116,6 +116,8 @@ export class HospitalAuthService implements IAuthService {
 
     async sendOtp(email: string): Promise<{ message: string }> {
   const otp = generateOtp();
+  console.log("OTP:",otp);
+  
   await OTPModel.findOneAndDelete({ email }); // delete existing
   await OTPModel.create({ email, otp });
 

@@ -14,6 +14,7 @@ const TYPES={
         // User
     UserRepository: Symbol.for("UserRepository"),
     UserAuthService: Symbol.for("UserAuthService"),
-    UserController: Symbol.for("UserAuthController")
+    UserController: Symbol.for("UserAuthController"),
+     OtpRepository: Symbol.for("OtpRepository"),
 }
 export default TYPES;

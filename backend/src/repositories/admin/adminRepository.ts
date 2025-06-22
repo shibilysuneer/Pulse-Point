@@ -17,4 +17,7 @@ export class AdminRepository extends BaseRepository<IHospitalDocument> implement
   async findByEmail(email: string): Promise<IHospitalDocument | null> {
     return await Hospital.findOne({  email }).lean();
   }
+  async updateAdminPassword(email: string, password: string): Promise<void> {
+  await this.model.findOneAndUpdate({ email }, { password });
+}
 }

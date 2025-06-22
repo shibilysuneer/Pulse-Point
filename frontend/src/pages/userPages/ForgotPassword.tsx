@@ -1,19 +1,18 @@
 import { useState, useEffect } from "react";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-// import { Eye, EyeOff } from "lucide-react";
 import { useAppDispatch } from "../../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import {
-  sendAdminOTP,
-  verifyAdminOTP,
-  resetAdminPassword,
-  resendAdminOTP
-} from '../../redux/slices/admin/adminSlice';
-import bg from '../../assets/bloodpulse.jpg'
+  sendUserOTP,
+  verifyUserOTP,
+  resetUserPassword,
+  resendUserOTP,
+} from "../../redux/slices/user/userSlice";
+import bg from "../../assets/bloodpulse.jpg";
 import { validatePassword } from "../../utils/passwordValidator";
 
-const ForgotPassword = () => {
+const ForgotUserPassword = () => {
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState("");
@@ -27,7 +26,7 @@ const ForgotPassword = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading } = useSelector((state: any) => state.admin);
+  const { loading } = useSelector((state: any) => state.user);
 
   useEffect(() => {
     let countdown: NodeJS.Timeout;
@@ -43,9 +42,8 @@ const ForgotPassword = () => {
 
   const handleSendOtp = () => {
     if (!email.trim()) return setError("Email is required");
-
     setError("");
-    dispatch(sendAdminOTP(email)).then((res: any) => {
+    dispatch(sendUserOTP(email)).then((res: any) => {
       if (res.payload?.message) {
         toast.success("OTP sent!");
         setStep(2);
@@ -59,9 +57,8 @@ const ForgotPassword = () => {
 
   const handleVerifyOtp = () => {
     if (!otp.trim()) return setError("OTP is required");
-
     setError("");
-    dispatch(verifyAdminOTP({ email, otp })).then((res: any) => {
+    dispatch(verifyUserOTP({ email, otp })).then((res: any) => {
       if (res.error) {
         setError(res.payload || "Invalid OTP");
       } else {
@@ -80,11 +77,11 @@ const ForgotPassword = () => {
     if (newPassword !== confirmPassword) return setError("Passwords do not match");
 
     setError("");
-    dispatch(resetAdminPassword({ email, password: newPassword })).then((res: any) => {
+    dispatch(resetUserPassword({ email, password: newPassword })).then((res: any) => {
       if (res.payload?.message) {
         toast.success("Password reset!");
         setStep(4);
-        setTimeout(() => navigate("/admin/signin"), 3000);
+        setTimeout(() => navigate("/user/signin"), 3000);
       } else {
         setError(res.payload || "Failed to reset password");
       }
@@ -93,7 +90,7 @@ const ForgotPassword = () => {
 
   const handleResendOtp = () => {
     if (!canResend) return;
-    dispatch(resendAdminOTP(email)).then((res: any) => {
+    dispatch(resendUserOTP(email)).then((res: any) => {
       if (res.payload?.message) {
         toast.success("OTP resent!");
         setOtp("");
@@ -111,7 +108,7 @@ const ForgotPassword = () => {
       style={{ backgroundImage: `url(${bg})` }}
     >
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md text-center">
-        <h2 className="text-xl font-bold mb-6 text-red-600">Forgot Password</h2>
+        <h2 className="text-xl font-bold mb-6 text-red-600">Forgot Password (User)</h2>
         {error && <p className="text-red-500 mb-3">{error}</p>}
 
         {/* Step 1: Email */}
@@ -178,7 +175,7 @@ const ForgotPassword = () => {
                 className="absolute right-3 top-2"
                 onClick={() => setShowPassword(!showPassword)}
               >
-                {/* {showPassword ? <EyeOff size={20} /> : <Eye size={20} />} */}
+                👁️
               </button>
             </div>
             <div className="relative mb-4">
@@ -194,7 +191,7 @@ const ForgotPassword = () => {
                 className="absolute right-3 top-2"
                 onClick={() => setShowConfirm(!showConfirm)}
               >
-                {/* {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />} */}
+                👁️
               </button>
             </div>
             <button
@@ -215,7 +212,7 @@ const ForgotPassword = () => {
         {/* Back to Login */}
         <div className="mt-4">
           <button
-            onClick={() => navigate("/admin/signin")}
+            onClick={() => navigate("/user/signin")}
             className="text-sm text-red-600 underline"
           >
             Back to Login
@@ -226,4 +223,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ForgotUserPassword;

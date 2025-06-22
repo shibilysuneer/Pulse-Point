@@ -35,3 +35,27 @@ export const logoutUser = async () => {
   
   return response.data;
 };
+
+export const sendOTP = async (email: string) => {
+  const res = await UserAPI.post("/send-otp", { email });
+    console.log("response-otp",res);
+  return res.data;
+};
+
+export const resendOTP = async (email: string) => {
+  const res = await UserAPI.post("/resend-otp", { email });
+    console.log("response-resend",res);
+  return res.data;
+};
+
+export const verifyOTP = async (otp: string, email: string) => {
+  const res = await UserAPI.post("/verify-otp", { email, otp });
+    console.log("response-verify",res);
+  return res.data;
+};
+
+export const resetPassword = async (email: string, password: string) => {
+  const res = await UserAPI.post("/reset-password", { email, password });
+    console.log("response-reset",res);
+  return res.data;
+};

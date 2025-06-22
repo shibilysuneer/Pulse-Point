@@ -37,3 +37,8 @@ export interface UserGoogleLoginResponse {
   user: IUserDocument;
   token: string;
 }
+export interface OtpRecord {
+  email: string;
+  otp: string;
+  createdAt: Date; 
+}

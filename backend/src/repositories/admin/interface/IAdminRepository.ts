@@ -3,4 +3,6 @@ import { IHospitalDocument } from "../../../models/hospital/interfaces/hospitalI
 
 export  interface IAdminRepository extends IBaseRepository<IHospitalDocument>{
   findByEmail(email:string):Promise<IHospitalDocument |null>;
+  updateAdminPassword(email: string, hashedPassword: string): Promise<void>;
+  
 }
