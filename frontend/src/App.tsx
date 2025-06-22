@@ -1,10 +1,8 @@
 import { BrowserRouter ,Route,Routes} from "react-router-dom"
-// import Header from "./components/admin/Header"
-// import Footer from "./components/admin/Footer"
-// import AdminLayout from "./components/admin/AdminLayout"
 import AdminRoutes from "./routes/AdminRoutes"
 import HospitalRoutes from './routes/HospitalRoutes'
 import { ToastContainer } from "react-toastify"
+import UserRoutes from "./routes/UserRoutes"
 
 
 const App = () => {
@@ -20,6 +18,8 @@ const App = () => {
   <Routes>
     <Route path='/admin/*' element={<AdminRoutes/>} />
     <Route path='/hospital/*' element={<HospitalRoutes/>}/>
+    <Route path='/user/*' element={<UserRoutes/>}/>
+
   </Routes>
   {/* <Footer/> */}
   </BrowserRouter>

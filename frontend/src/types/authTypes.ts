@@ -12,3 +12,14 @@ export interface SignupHospitalRequest {
     email: string;
     googleId: string;
   }
+
+
+  export interface UserLoginRequest {
+  email: string;
+  password: string;
+}
+export interface UserSignupRequest {
+  username: string;
+  email: string;
+  password: string;
+}
