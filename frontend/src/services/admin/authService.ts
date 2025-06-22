@@ -5,25 +5,30 @@ import type {LoginRequest } from "../../types/authTypes"
 export const loginAdmin =async(data:LoginRequest)=>{
     const response =await AdminAPI.post("/login",data)
      console.log("res-login", response);
-      if (response.data){
-        const { token,admin } = response.data.token;
-        localStorage.setItem("admin_token", token);
-        localStorage.setItem("admin_role", admin.role);
-      }
-    return response.data;
+
+        const { accesstoken ,admin } = response.data;
+        
+       if (accesstoken  && admin) {
+    localStorage.setItem("admin_token", accesstoken );
+    localStorage.setItem("admin_role", admin.role);
+    return admin;
+  }
+    
+    // return response.data;
+      throw new Error("Invalid response from server");
 }
 
 
-export const refreshAccessToken = async () => {
+export const getRefreshAccessToken = async () => {
   const res = await AdminAPI.post("/refresh-token");
   console.log("refre-response",res);
   
-  return res.data.accessToken;
+  return res.data;
 };
 
-export const logoutAdmin = async () => {
+export const adminLogout = async () => {
   const res = await AdminAPI.post("/logout");
-  console.log("response",res);
+  console.log("response-logout",res);
   return res.data;
 };
 

@@ -1,6 +1,6 @@
 import { createAsyncThunk,createSlice } from "@reduxjs/toolkit";
 import type{ LoginRequest} from "../../../types/authTypes";
-import { loginAdmin, refreshAccessToken , resendOTP, resetPassword, sendOTP, verifyOTP } from "../../../services/admin/authService";
+import { loginAdmin , resendOTP, resetPassword, sendOTP, verifyOTP ,adminLogout, getRefreshAccessToken} from "../../../services/admin/authService";
 
 interface AdminState {
   admin: any;
@@ -20,9 +20,9 @@ export const adminLogin = createAsyncThunk(
     "admin/login",
     async(data:LoginRequest,{rejectWithValue})=>{
         try {
-            const response=await loginAdmin(data);
-            console.log("loginAdmin response:", response);
-            return response;
+            const admin =await loginAdmin(data);
+            console.log("loginAdmin response:", admin );
+            return admin ;
         } catch (error:any) {
           console.error("err", error);
                 const message = error.response?.data?.message || error.message || 'Login failed';
@@ -30,10 +30,9 @@ export const adminLogin = createAsyncThunk(
         }
     }
 );
-export const refreshToken = createAsyncThunk("admin/refreshToken", async (_, { rejectWithValue }) => {
+export const refreshAccessToken = createAsyncThunk("admin/refreshToken", async (_, { rejectWithValue }) => {
   try {
-    const response  = await refreshAccessToken();
-    // localStorage.setItem("admin_token", token); 
+    const response  = await getRefreshAccessToken();
      return response.token;
   } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || error.message);
@@ -41,8 +40,9 @@ export const refreshToken = createAsyncThunk("admin/refreshToken", async (_, { r
 });
 export const logoutAdmin = createAsyncThunk("admin/logout", async (_, { rejectWithValue }) => {
   try {
-    await logoutAdmin(); 
-    localStorage.removeItem("admin_token"); 
+    await adminLogout(); 
+    localStorage.removeItem("admin_token");
+    localStorage.removeItem("admin_role"); 
     return true;
   } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || error.message);
@@ -105,9 +105,14 @@ const adminSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(refreshToken.fulfilled, (state, action) => {
+      .addCase(refreshAccessToken.fulfilled, (state, action) => {
         state.accessToken = action.payload;
       })
+      .addCase(refreshAccessToken.rejected, (state, action) => {
+        state.error = action.payload as string;
+        state.accessToken = null;
+        state.admin = null; 
+       })
       .addCase(logoutAdmin.fulfilled, (state) => {
         state.admin = null;
         state.accessToken = null;

@@ -17,11 +17,10 @@ export const ProtectedRoute  = ({allowedRoles}:ProtectedRouteProps) => {
         return <Navigate to="/admin/unauthorized" replace />;
        }
       return <Outlet />;
-  // return token ? <Navigate to="/admin/home" replace /> : <Outlet />;
 };
 export const ProtectedAuthRoute = () =>{
 const token = localStorage.getItem("admin_token");
  const isLoggedIn = !!token;
-  return isLoggedIn ? <Navigate to="/admin/home" replace /> : <Outlet />;
+  return isLoggedIn ? <Navigate to="/admin/dashboard" replace /> : <Outlet />;
 }
 

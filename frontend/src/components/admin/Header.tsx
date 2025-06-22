@@ -1,15 +1,22 @@
 
 // import React from 'react';
 import { Link, useNavigate} from "react-router-dom";
+import { useAppDispatch } from "../../redux/hooks";
+import { logoutAdmin } from "../../redux/slices/admin/adminSlice";
 
 function Header() {
 const navigate = useNavigate()  
- const handleSignOut = () => {
-    const confirmed = window.confirm("Do you really want to log out?");
-    if (confirmed) {
-      localStorage.removeItem("adminToken"); // Adjust the key if needed
-      navigate("/admin/signin");
-    }
+const dispatch = useAppDispatch()
+ const handleSignOut = async () => {
+  
+    // await dispatch(logoutAdmin())
+    // navigate('/admin/signin')
+      const resultAction = await dispatch(logoutAdmin());
+  if (logoutAdmin.fulfilled.match(resultAction)) {
+    navigate("/admin/signin");
+  } else {
+    console.error("Logout failed");
+  }
   };
   return (
     <header className="flex justify-between items-center px-8 py-4 bg-white shadow">

@@ -42,7 +42,7 @@ function Signin() {
       const result = await dispatch(adminLogin(formData)).unwrap();
       console.log('login result:',result);
       toast.success('Login successfull')
-      navigate('/admin/home');
+      navigate('/admin/dashboard');
     } catch (err:any) {
       console.error('Login error:', err);
       setError( 'Something went wrong');

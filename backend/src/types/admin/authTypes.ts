@@ -8,6 +8,7 @@ export interface AdminLoginRequest {
 }
 export interface AdminLoginResponse {
     admin:IHospitalDocument;
-    token:string;
+    accesstoken:string;
+    refreshToken: string;
 }
  

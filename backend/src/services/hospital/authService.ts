@@ -42,8 +42,8 @@ export class HospitalAuthService implements IAuthService {
     });
 
     const token = generateToken({
-      _id: newHospital._id,
-      email: newHospital.email,
+      _id: newHospital._id.toString(),
+       role: newHospital.role,
       
     });
      return {
@@ -66,8 +66,8 @@ export class HospitalAuthService implements IAuthService {
     }
 
     const token = generateToken({
-      _id: hospital._id,
-      email: hospital.email,
+      _id: hospital._id.toString(),
+      role: hospital.role,
     });
 
     return {
@@ -94,8 +94,9 @@ export class HospitalAuthService implements IAuthService {
     }
 
     const token = generateToken({
-      _id: hospital._id,
-      email: hospital.email,
+      _id: hospital._id.toString(),
+       role: hospital.role,
+     
     });
 
     return {
