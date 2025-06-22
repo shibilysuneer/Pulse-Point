@@ -3,6 +3,7 @@ import type { UserLoginRequest, UserSignupRequest } from "../../types/authTypes"
 
 export const loginUser = async (data: UserLoginRequest) => {
   const response = await UserAPI.post("/login", data);
+    console.log("res-loginuser:",response);
   const { accesstoken, user } = response.data;
 
   if (accesstoken && user) {
@@ -16,6 +17,8 @@ export const loginUser = async (data: UserLoginRequest) => {
 
 export const signupUser = async (data: UserSignupRequest) => {
   const response = await UserAPI.post("/signup", data);
+  console.log("res-signupuser:",response);
+  
   const { accesstoken, user } = response.data;
 
   if (accesstoken && user) {
@@ -28,5 +31,7 @@ export const signupUser = async (data: UserSignupRequest) => {
 };
 export const logoutUser = async () => {
   const response = await UserAPI.post('/logout');
+  console.log("res-logout:",response);
+  
   return response.data;
 };

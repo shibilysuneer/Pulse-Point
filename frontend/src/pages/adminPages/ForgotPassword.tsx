@@ -27,7 +27,7 @@ const ForgotPassword = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { loading } = useSelector((state: any) => state.superAdmin);
+  const { loading } = useSelector((state: any) => state.admin);
 
   useEffect(() => {
     let countdown: NodeJS.Timeout;

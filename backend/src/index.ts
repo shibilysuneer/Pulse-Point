@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import adminRoutes from "./routes/adminRoutes"
 import hospitalRoutes from './routes/hospitalRoutes'
+import userRoutes from './routes/userRoutes'
 import connectDB from "./config/db"
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
@@ -23,6 +24,7 @@ app.use(cors({
 
 app.use("/api/admin",adminRoutes)
 app.use("/api/hospital",hospitalRoutes)
+app.use("/api/user",userRoutes)
 
 
 app.listen(3000,()=>{

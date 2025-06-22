@@ -19,7 +19,9 @@ const UserHome = () => {
         >
           Donate Now
         </Link>
+        <div className="p-3">
         <span className="text-red-600 font-medium">Thank you for being a part of our mission 🩸</span>
+        </div>
       </div>
     </div>
   );

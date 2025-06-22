@@ -41,7 +41,7 @@ export const userSignup = createAsyncThunk(
     }
   }
 );
-export const userLogout = createAsyncThunk('user/logout', async (_, { rejectWithValue }) => {
+export const  userLogout = createAsyncThunk('user/logout', async (_, { rejectWithValue }) => {
   try {
     await logoutUser();
     localStorage.removeItem('user_token');
