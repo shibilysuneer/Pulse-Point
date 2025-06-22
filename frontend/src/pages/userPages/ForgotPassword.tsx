@@ -77,7 +77,7 @@ const ForgotUserPassword = () => {
     if (newPassword !== confirmPassword) return setError("Passwords do not match");
 
     setError("");
-    dispatch(resetUserPassword({ email, password: newPassword })).then((res: any) => {
+    dispatch(resetUserPassword({ email,otp, newPassword  })).then((res: any) => {
       if (res.payload?.message) {
         toast.success("Password reset!");
         setStep(4);
@@ -108,7 +108,7 @@ const ForgotUserPassword = () => {
       style={{ backgroundImage: `url(${bg})` }}
     >
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md text-center">
-        <h2 className="text-xl font-bold mb-6 text-red-600">Forgot Password (User)</h2>
+        <h2 className="text-xl font-bold mb-6 text-red-600">Forgot Password</h2>
         {error && <p className="text-red-500 mb-3">{error}</p>}
 
         {/* Step 1: Email */}

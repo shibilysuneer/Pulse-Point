@@ -37,11 +37,7 @@ export class UserRepository extends BaseRepository<IUserDocument> implements IUs
     await this.otpRepository.saveOtp( email, otp);
   }
    async reSaveOtp(email: string, otp: string): Promise<void> {
-    // await OTPModel.findOneAndUpdate(
-    //   { email },
-    //   { otp, createdAt: new Date() },
-    //   { new: true, upsert: true }
-    // );
+    
     await this.otpRepository.reSaveOtp(email, otp);
   }
   async findOtpByEmail(email: string): Promise<OtpRecord | null> {

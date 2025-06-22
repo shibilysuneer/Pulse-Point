@@ -116,6 +116,8 @@ export class UserAuthService implements IUserAuthService {
 
   async sendOtp(email: string): Promise<{ message: string }> {
     const otp = generateOtp();
+    console.log("OTP",otp);
+    
     await OTPModel.findOneAndDelete({ email });
     await OTPModel.create({ email, otp });
 
@@ -125,6 +127,7 @@ export class UserAuthService implements IUserAuthService {
 
   async resendOtp(email: string): Promise<{ message: string }> {
     const otp = generateOtp();
+        console.log("OTP",otp);
     await OTPModel.findOneAndDelete({ email });
     await OTPModel.create({ email, otp });
 
@@ -153,8 +156,9 @@ export class UserAuthService implements IUserAuthService {
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    user.password = hashedPassword;
-    await user.save();
+    // user.password = hashedPassword;
+    // await user.save();
+    await this.userRepository.updatePassword(email, hashedPassword);
 
     return { message: 'Password reset successful' };
   }
