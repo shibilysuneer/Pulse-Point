@@ -6,6 +6,8 @@ export const createDonorRequest = createAsyncThunk(
   async (formData: any, thunkAPI) => {
     try {
       const response = await submitDonorForm(formData);
+      console.log("res_donor",response);
+      
       return response;
     } catch (err: any) {
       return thunkAPI.rejectWithValue(err.response?.data?.message || "Error");

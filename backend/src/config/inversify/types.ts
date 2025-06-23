@@ -21,5 +21,8 @@ const TYPES={
 
     AdminHospitalController: Symbol.for("AdminHospitalController"),
 
+    DonorService: Symbol.for("DonorService"),
+    DonorRepository: Symbol.for("DonorRepository"),
+    DonorController: Symbol.for("DonorController"),
 }
 export default TYPES;

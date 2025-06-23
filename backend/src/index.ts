@@ -30,8 +30,3 @@ app.use("/api/user",userRoutes)
 app.listen(3000,()=>{
     console.log("server running port 3000...");
 })
-// app.get("/",(_req,res)=>{
-//     res.json({
-//         message:"API working"
-//     })
-// })

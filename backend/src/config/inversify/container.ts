@@ -28,23 +28,30 @@ import { OtpRepository } from "../../repositories/otp/otpRepository";
 import { IOtpRepository } from "../../repositories/otp/interface/IOtpRepository";
 import { IHospitalService } from "../../services/admin/interface/IHospitalService";
 import { HospitalService } from "../../services/admin/hospitalService";
-
+import { DonorController } from "../../controllers/user/donorController";
+import { IDonorService } from "../../services/user/interface/IDonorService";
+import { IDonorRepository } from "../../repositories/user/interface/IDonorRepository";
+import { DonorService } from "../../services/user/donorService";
+import { DonorRepository } from "../../repositories/user/donorRepository";
 
 const container = new Container();
-  
+//admin  
 container.bind<IAdminAuthService>(TYPES.AuthService).to(authService)
 container.bind<IAdminRepository>(TYPES.AdminRepository).to(AdminRepository)
 container.bind<IAdminController>(TYPES.authController).to(authController)
 container.bind<IAdminHospitalController>(TYPES.AdminHospitalController).to(AdminHospitalController);
-
+//hospital
 container.bind<IHospitalRepository>(TYPES.HospitalRepository).to(HospitalRepository)
 container.bind<IHospitalAuthService>(TYPES.HospitalAuthService).to(HospitalAuthService)
 container.bind<IHospitalController>(TYPES.HospitalController).to(HospitalController);
 container.bind<IHospitalService>(TYPES.HospitalService).to(HospitalService);
-
+//user
 container.bind<IUserRepository>(TYPES.UserRepository).to(UserRepository);
 container.bind<IUserAuthService>(TYPES.UserAuthService).to(UserAuthService);
 container.bind<IUserController>(TYPES.UserController).to(UserController);
 container.bind<IOtpRepository>(TYPES.OtpRepository).to(OtpRepository);
+container.bind<DonorController>(TYPES.DonorController).to(DonorController);
+container.bind<IDonorService>(TYPES.DonorService).to(DonorService);
+container.bind<IDonorRepository>(TYPES.DonorRepository).to(DonorRepository);
 
 export default container;

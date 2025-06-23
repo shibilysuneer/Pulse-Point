@@ -66,8 +66,8 @@ const DonorRequestForm = () => {
           <input name="age" placeholder="Age" className="input" 
           value={formData.age} onChange={handleChange}  />
           <input name="bloodGroup" placeholder="Blood Group" className="input" value={formData.bloodGroup} onChange={handleChange}  />
-          <select name="gender" className="input" value={formData.gender} onChange={handleChange} >
-            <option value="">Gender</option>
+          <select name="gender" className="input" value={formData.gender} onChange={handleChange} required>
+            <option value="" disabled>Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
           </select>
