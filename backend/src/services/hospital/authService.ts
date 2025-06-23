@@ -39,6 +39,7 @@ export class HospitalAuthService implements IAuthService {
       createdAt: new Date(),
       registrationNumber,
       role: "hospital",
+       isBlocked: false, 
     });
 
     const token = generateToken({
@@ -90,6 +91,7 @@ export class HospitalAuthService implements IAuthService {
         // googleId,
         createdAt: new Date(),
         role: "hospital",
+        isBlocked: false, 
       });
     }
 

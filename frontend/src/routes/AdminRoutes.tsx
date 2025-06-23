@@ -1,6 +1,7 @@
 import { Route,Routes } from "react-router-dom";
 import Signin from "../pages/adminPages/Signin"
 import AdminHome from "../pages/adminPages/AdminHome";
+import AdminHospital from "../pages/adminPages/Hospitals";
 
 // import AdminPrivateRoute from "../components/admin/AdminPrivateRoute";
 import {ProtectedAuthRoute,ProtectedRoute} from "../components/admin/ProtectAuthRoute";
@@ -19,6 +20,7 @@ const AdminRoutes =() => {
        <Route element={<ProtectedRoute allowedRoles={["admin"]}  />}>
          <Route element={<AdminLayout/>}>
            <Route path="/dashboard" element={<AdminHome />} />
+           <Route path="/hospitals" element={<AdminHospital />} />
          </Route>
       </Route>
 

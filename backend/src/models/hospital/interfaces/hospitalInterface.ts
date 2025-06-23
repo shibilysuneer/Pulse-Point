@@ -13,8 +13,8 @@ export interface IHospital{
   updatedAt?: Date;
   googleId?: string;
   isAdmin?: boolean;
-   role: string;
-
+  role: string;
+  isBlocked: boolean;
 }
 export interface IHospitalDocument extends IHospital,Document{
     _id:Types.ObjectId;

@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import adminReducer from './slices/admin/adminSlice'
 import hospitalReducer from './slices/hospital/hospitalSlice'
 import userReducer from './slices/user/userSlice'
+import adminHospitalReducer from "./slices/admin/adminHospitalSlice"
 
  export const store =configureStore({
     reducer:{
         admin:adminReducer,
         hospital:hospitalReducer,
         user:userReducer,
+        adminHospital:adminHospitalReducer,
     }
 })
 export type RootState = ReturnType<typeof store.getState>;

@@ -30,6 +30,10 @@ export const hospitalSchema:Schema<IHospitalDocument> = new Schema({
     default: "hospital",
     required: true
   },
+   isBlocked: {
+      type: Boolean,
+      default: false,
+    },
 }, { timestamps: true });
 
 const Hospital  = mongoose.model<IHospitalDocument>('Hospital', hospitalSchema);
