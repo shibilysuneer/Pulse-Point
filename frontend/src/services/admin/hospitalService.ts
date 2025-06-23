@@ -26,7 +26,7 @@ export const toggleHospitalBlockService = async (
 ) => {
   try {
     const response = await AdminAPI.patch(`/hospitals/${hospitalId}/block`, {
-      block: !isBlocked,
+      isBlocked
     });
     return response.data;
   } catch (error: any) {

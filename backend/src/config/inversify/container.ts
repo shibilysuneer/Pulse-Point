@@ -8,6 +8,8 @@ import { AdminRepository } from "../../repositories/admin/adminRepository";
 import { IAdminRepository } from "../../repositories/admin/interface/IAdminRepository" 
 import  {authController } from "../../controllers/admin/authController";
 import { IAdminController } from "../../controllers/admin/interface/IAuthController";
+import { IAdminHospitalController } from "../../controllers/admin/interface/IHospitalController";
+import { AdminHospitalController } from "../../controllers/admin/hospitalController";
 
 import { HospitalRepository } from "../../repositories/hospital/hospitalRepository";
 import { IHospitalRepository } from "../../repositories/hospital/interface/IHospitalRepository";
@@ -24,6 +26,8 @@ import { IUserController } from "../../controllers/user/interface/IUserControlle
 import { UserRepository } from "../../repositories/user/userRepository";
 import { OtpRepository } from "../../repositories/otp/otpRepository";
 import { IOtpRepository } from "../../repositories/otp/interface/IOtpRepository";
+import { IHospitalService } from "../../services/admin/interface/IHospitalService";
+import { HospitalService } from "../../services/admin/hospitalService";
 
 
 const container = new Container();
@@ -31,10 +35,12 @@ const container = new Container();
 container.bind<IAdminAuthService>(TYPES.AuthService).to(authService)
 container.bind<IAdminRepository>(TYPES.AdminRepository).to(AdminRepository)
 container.bind<IAdminController>(TYPES.authController).to(authController)
+container.bind<IAdminHospitalController>(TYPES.AdminHospitalController).to(AdminHospitalController);
 
 container.bind<IHospitalRepository>(TYPES.HospitalRepository).to(HospitalRepository)
 container.bind<IHospitalAuthService>(TYPES.HospitalAuthService).to(HospitalAuthService)
 container.bind<IHospitalController>(TYPES.HospitalController).to(HospitalController);
+container.bind<IHospitalService>(TYPES.HospitalService).to(HospitalService);
 
 container.bind<IUserRepository>(TYPES.UserRepository).to(UserRepository);
 container.bind<IUserAuthService>(TYPES.UserAuthService).to(UserAuthService);

@@ -20,7 +20,7 @@ const dispatch = useAppDispatch()
       <div className="text-red-600 font-bold text-lg">🩸 PULSE POINT</div>
      <nav className="flex space-x-12 text-gray-500 font-medium font-mono uppercase tracking-wide">
   <Link to="/user/home">HOME</Link>
-  <Link to="/user/donate">DONATE</Link>
+  <Link to="/user/donor">DONATE</Link>
   <Link to="/user/notification">NOTIFICATION</Link>
   <Link to="/user/contact">CONTACT</Link>
 </nav>

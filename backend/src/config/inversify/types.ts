@@ -11,10 +11,15 @@ const TYPES={
     HospitalRepository: Symbol.for('HospitalRepository'),
     HospitalAuthService: Symbol.for('HospitalAuthService'),
     HospitalController: Symbol.for('HospitalAuthController'),
+    HospitalService: Symbol("HospitalService"),
+
         // User
     UserRepository: Symbol.for("UserRepository"),
     UserAuthService: Symbol.for("UserAuthService"),
     UserController: Symbol.for("UserAuthController"),
-     OtpRepository: Symbol.for("OtpRepository"),
+    OtpRepository: Symbol.for("OtpRepository"),
+
+    AdminHospitalController: Symbol.for("AdminHospitalController"),
+
 }
 export default TYPES;

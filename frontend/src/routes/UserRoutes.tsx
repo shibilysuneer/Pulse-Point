@@ -6,7 +6,7 @@ import { UserProtectedRoute } from '../components/user/ProtectRoute';
 import UserLayout from '../components/user/UserLayout';
 import UserHome from '../pages/userPages/UserHome';
 import ForgotUserPassword from '../pages/userPages/ForgotPassword';
-
+import Donor from "../pages/userPages/Donor"
 function UserRoutes() {
   return (
     <Routes>
@@ -20,7 +20,7 @@ function UserRoutes() {
       <Route element={<UserProtectedRoute allowedRoles={['user']} />}>
        <Route element={<UserLayout/>}>
         <Route path="/home" element={<UserHome />} />
-        {/* Add more protected user pages here */}
+         <Route path="/donor" element={<Donor />} />
         </Route>
       </Route>
     </Routes>

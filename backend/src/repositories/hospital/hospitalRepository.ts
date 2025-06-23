@@ -23,5 +23,19 @@ export class HospitalRepository extends BaseRepository<IHospitalDocument>{
     hospital.password = hashedPassword;
     await hospital.save();
 }
+ async findHospitals(filter: any, page: number, limit: number): Promise<IHospital[]> {
+    return await Hospital.find(filter)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .lean();
+  }
+
+  async countHospitals(filter: any): Promise<number> {
+    return await Hospital.countDocuments(filter);
+  }
+
+  async findByIdAndUpdate(id: string, update: Partial<IHospital>): Promise<IHospital | null> {
+    return await Hospital.findByIdAndUpdate(id, update, { new: true });
+  }
 
 }
