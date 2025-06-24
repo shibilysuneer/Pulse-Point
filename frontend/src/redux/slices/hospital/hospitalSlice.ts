@@ -28,7 +28,10 @@ export const hospitalLogin= createAsyncThunk('hospital/login',
       return response;
         } catch (error:any) {
           console.error("err", error);
-      return rejectWithValue(error.response?.data?.message || "Login failed");  
+            const message = error.response?.data?.error || "Login failed";
+
+      return rejectWithValue(message);
+      // return rejectWithValue(error.response?.data?.message || "Login failed");  
         }
     }
 )

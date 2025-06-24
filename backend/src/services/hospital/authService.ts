@@ -61,6 +61,10 @@ export class HospitalAuthService implements IAuthService {
     if (!hospital) {
       throw new Error("Hospital not found");
     }
+     if (hospital.isBlocked) {
+    throw new Error("Your account has been blocked by the admin.");
+  }
+
     const isMatch = await bcrypt.compare(password, hospital.password!);
     if (!isMatch) {
       throw new Error("Invalid password");

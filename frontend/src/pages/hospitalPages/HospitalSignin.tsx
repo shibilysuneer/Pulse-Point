@@ -31,8 +31,11 @@ const HospitalSignin = () => {
       localStorage.setItem("hospitalToken", result.token);
       toast.success("Login successful");
        navigate("/hospital/home");
-    } catch (error) {
-      setError("Invalid email or password");
+    } catch (error: any) {
+      // setError("Invalid email or password");
+       setError(error);
+    toast.error(error);
+      
     }
    }
   return (

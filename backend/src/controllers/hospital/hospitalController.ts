@@ -45,8 +45,8 @@ export class HospitalController implements IHospitalController {
         return;
       }
 
-      const token = await this.hospitalAuthService.login({ email, password });
-      res.status(200).json({ token });
+      const {token,hospital } = await this.hospitalAuthService.login({ email, password });
+      res.status(200).json({ token,hospital  });
     } catch (error: any) {
       console.error("Login Error:", error);
       res.status(401).json({ error: error.message });

@@ -3,10 +3,11 @@ import { useAppDispatch } from "../../redux/hooks";
 import { createDonorRequest } from "../../redux/slices/user/donorSlice";
 import { toast } from "react-toastify";
 import type { DonorFormData } from "../../types/donorType";
+import { useNavigate } from "react-router-dom";
 
 const DonorRequestForm = () => {
   const dispatch = useAppDispatch();
-
+  const navigate = useNavigate()
   const [formData, setFormData] = useState<DonorFormData>({
     username: "",
     age: "",
@@ -46,6 +47,7 @@ const DonorRequestForm = () => {
     const action = await dispatch(createDonorRequest(dataToSubmit));
     if (createDonorRequest.fulfilled.match(action)) {
       toast.success("Donor request submitted successfully!");
+      navigate("/user/home")
     }
     //  else {
     //   throw new Error(action.payload || "Submission failed");
