@@ -22,4 +22,26 @@ export class DonorController {
       res.status(500).json({ message: "Failed to submit donor request." });
     }
   }
+
+  async getAllDonorRequests(_req: Request, res: Response): Promise<void> {
+    try {
+      const donors = await this.donorService.getAllRequests();
+      res.status(200).json(donors);
+    } catch (error: any) {
+      res.status(500).json({ message: "Failed to fetch donor requests." });
+    }
+  }
+
+  async updateDonorStatus(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+
+      const updated = await this.donorService.updateDonorStatus(id, status);
+      res.status(200).json(updated);
+    } catch (err: any) {
+      console.error("Error updating donor status:", err.message);
+      res.status(500).json({ message: "Failed to update status" });
+    }
+  }
 }

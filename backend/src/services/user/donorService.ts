@@ -14,4 +14,12 @@ export class DonorService implements IDonorService {
   async createDonorRequest(donorData: IDonor): Promise<IDonor> {
     return await this.donorRepo.createDonorRequest(donorData);
   }
+
+  async getAllRequests(): Promise<IDonor[]> {
+    return await this.donorRepo.getAllDonorRequests();
+  }
+
+  async updateDonorStatus(id: string, status: string): Promise<IDonor | null> {
+    return await this.donorRepo.updateDonorStatus(id, status);
+  }
 }

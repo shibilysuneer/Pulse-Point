@@ -5,4 +5,5 @@ export interface IDonorRepository {
   createDonorRequest(donorData: IDonor): Promise<IDonor>;
   getAllDonorRequests(): Promise<IDonor[]>;
   getDonorById(id: string): Promise<IDonor | null>;
+  updateDonorStatus(id: string, status: string): Promise<IDonor | null>;
 }

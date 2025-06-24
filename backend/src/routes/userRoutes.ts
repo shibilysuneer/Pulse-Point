@@ -21,5 +21,6 @@ router.post("/verify-otp", userController.verifyOtp.bind(userController));
 router.post("/reset-password", userController.resetPassword.bind(userController));
 
 router.post("/donor-request", donorController.handleDonorRequest.bind(donorController));
+router.patch("/donor-requests/:id/status", donorController.updateDonorStatus.bind(donorController));
 
 export default router;

@@ -1,7 +1,7 @@
 // src/models/donorModel.ts
 import mongoose from "mongoose";
 
-const donorSchema = new mongoose.Schema({
+const donorRequesterSchema  = new mongoose.Schema({
   username: { type: String, required: true },
   age: { type: String, required: true },
   bloodGroup: { type: String, required: true },
@@ -20,9 +20,15 @@ const donorSchema = new mongoose.Schema({
   majorSurgery: { type: Boolean, required: true },
   dentalExtraction: { type: Boolean, required: true },
   repeatedDiarrhoea: { type: Boolean, required: true },
+
+  status: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending"
+  }
 }, {
   timestamps: true,
 });
 
-const Donor = mongoose.model("Donor", donorSchema);
-export default Donor;
+const DonorRequester  = mongoose.model("DonorRequester", donorRequesterSchema);
+export default DonorRequester;
