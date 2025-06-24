@@ -8,6 +8,7 @@ import {ProtectedAuthRoute,ProtectedRoute} from "../components/admin/ProtectAuth
 import ForgotPassword from "../pages/adminPages/ForgotPassword";
 import Unauthorized from "../pages/adminPages/Unauthorized";
 import AdminLayout from "../components/admin/AdminLayout";
+import AdminDonor from "../pages/adminPages/Donors";
 
 const AdminRoutes =() => {
     return (
@@ -21,6 +22,7 @@ const AdminRoutes =() => {
          <Route element={<AdminLayout/>}>
            <Route path="/dashboard" element={<AdminHome />} />
            <Route path="/hospitals" element={<AdminHospital />} />
+           <Route path="/donors" element={<AdminDonor />} />
          </Route>
       </Route>
 
