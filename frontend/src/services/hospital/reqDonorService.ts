@@ -5,3 +5,13 @@ export const getDonorRequests = async () => {
   const response = await HospitalAPI.get("/donor-requests");
   return response.data;
 };
+export const getDonorById = async (id: string) => {
+  const response = await HospitalAPI.get(`/donor/${id}`);
+  return response.data;
+};
+export const updateDonorStatus = async (id: string, status: string) => {
+  const response = await HospitalAPI.patch(`/hospital/donor/${id}/status`, {
+    status,
+  });
+   return response.data;
+};

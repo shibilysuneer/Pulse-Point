@@ -18,5 +18,7 @@ export interface IDonor {
   majorSurgery: boolean;
   dentalExtraction: boolean;
   repeatedDiarrhoea: boolean;
+  status: 'pending' | 'approved' | 'rejected';
+
 }
 export interface IDonorDocument extends IDonor, Document {}

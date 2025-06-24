@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { createDonorRequest } from "../../redux/slices/user/donorSlice";
 import { toast } from "react-toastify";
-import type { DonorFormData } from "../../types/donorType";
+import type { DonorFormData } from "../../types/donorTypes";
 import { useNavigate } from "react-router-dom";
 
 const DonorRequestForm = () => {
@@ -87,7 +87,7 @@ const DonorRequestForm = () => {
             <label><input type="radio" name="donatedBefore" value="no" checked={formData.donatedBefore === "no"} onChange={handleChange} /> No</label>
           </div>
           {formData.donatedBefore === "yes" && (
-            <input type="date" name="lastDonatedDate" className="input mt-2" value={formData.lastDonatedDate} onChange={handleChange} />
+            <input type="date" name="lastDonatedDate" className="input mt-2" value={formData.lastDonatedDate||""} onChange={handleChange} />
           )}
         </div>
 

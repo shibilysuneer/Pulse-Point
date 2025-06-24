@@ -1,6 +1,6 @@
 // redux/slices/admin/adminDonorSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import type { DonorFormData } from '../../../types/donorType';
+import type { DonorFormData } from '../../../types/donorTypes';
 import { getAllDonors } from '../../../services/admin/donorService';
 
 

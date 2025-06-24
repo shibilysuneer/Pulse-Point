@@ -14,7 +14,7 @@ const HospitalLayout = () => {
 
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto p-4 md:p-6 bg-gray-100 bg-opacity-80">
-        <div className="bg-white rounded-lg shadow-md p-4 md:p-6 min-h-[60vh] max-w-2xl mx-auto">
+        <div className="bg-white rounded-lg shadow-md p-6 md:p-10 min-h-[70vh] max-w-6xl  mx-auto w-full">
           <Outlet />
         </div>
       </main>

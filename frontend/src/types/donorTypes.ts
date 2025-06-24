@@ -21,4 +21,5 @@ export interface DonorFormData {
   repeatedDiarrhoea: boolean;
   createdAt?: string;
   updatedAt?: string;
+  status?: "pending" | "approved" | "rejected";
 }
