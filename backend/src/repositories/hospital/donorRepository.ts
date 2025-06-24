@@ -1,6 +1,4 @@
-// src/repositories/user/donorRepository.ts
 import { injectable } from "inversify";
-// import Donor from "../../models/user/donorModel";
 import { IDonor } from "../../models/user/interface/donorInterface";
 import { IDonorRepository } from "./interface/IDonorRepository";
 import DonorRequester from "../../models/user/donorModel";
@@ -16,7 +14,7 @@ export class DonorRepository implements IDonorRepository {
     return await DonorRequester.find().sort({ createdAt: -1 });
   }
 
-  async getDonorById(id: string): Promise<IDonor | null> {
+  async getSingleReqDonor(id: string): Promise<IDonor | null> {
     return await DonorRequester.findById(id);
   }
 

@@ -3,11 +3,12 @@ import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
 import TYPES from "../../config/inversify/types";
 import { IDonorService } from "../../services/user/interface/IDonorService";
+import { IDonorController } from "./interface/IDonorController";
 
 @injectable()
-export class DonorController {
+export class DonorController implements IDonorController{
   constructor(
-    @inject(TYPES.DonorService) private donorService: IDonorService
+    @inject(TYPES.HospitalDonorService) private donorService: IDonorService
   ) {}
 
   // Handle donor form submission
@@ -33,7 +34,22 @@ export class DonorController {
       res.status(500).json({ message: "Failed to fetch donor requests." });
     }
   }
+ async getSingleReqDonor(req: Request, res: Response): Promise<void> {
+    try {
+      const { id } = req.params;
+      const donor = await this.donorService.getSingleReqDonor(id);
 
+      if (!donor) {
+        res.status(404).json({ message: "Donor not found" });
+        return;
+      }
+
+      res.status(200).json(donor);
+    } catch (error: any) {
+      console.error("Error fetching donor by ID:", error.message);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
   // Update status: accept/reject a donor request
   async updateDonorStatus(req: Request, res: Response): Promise<void> {
     try {

@@ -12,6 +12,7 @@ const TYPES={
     HospitalAuthService: Symbol.for('HospitalAuthService'),
     HospitalController: Symbol.for('HospitalAuthController'),
     HospitalService: Symbol("HospitalService"),
+    AdminHospitalController: Symbol.for("AdminHospitalController"),
 
         // User
     UserRepository: Symbol.for("UserRepository"),
@@ -19,10 +20,16 @@ const TYPES={
     UserController: Symbol.for("UserAuthController"),
     OtpRepository: Symbol.for("OtpRepository"),
 
-    AdminHospitalController: Symbol.for("AdminHospitalController"),
+// Donor (Separate User and Hospital)
+  UserDonorService: Symbol.for("UserDonorService"),
+  UserDonorRepository: Symbol.for("UserDonorRepository"),
+  UserDonorController: Symbol.for("UserDonorController"),
 
-    DonorService: Symbol.for("DonorService"),
-    DonorRepository: Symbol.for("DonorRepository"),
-    DonorController: Symbol.for("DonorController"),
+  HospitalDonorService: Symbol.for("HospitalDonorService"),
+  HospitalDonorRepository: Symbol.for("HospitalDonorRepository"),
+  HospitalDonorController: Symbol.for("HospitalDonorController"),
+    // DonorService: Symbol.for("DonorService"),
+    // DonorRepository: Symbol.for("DonorRepository"),
+    // DonorController: Symbol.for("DonorController"),
 }
 export default TYPES;

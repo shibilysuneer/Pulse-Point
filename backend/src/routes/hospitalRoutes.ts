@@ -7,7 +7,7 @@ import { IDonorController } from "../controllers/hospital/interface/IDonorContro
 const router = express.Router()
 
 const hospitalController = container.get<IHospitalController>(TYPES.HospitalController)
-const donorController = container.get<IDonorController>(TYPES.DonorController);
+const donorController = container.get<IDonorController>(TYPES.HospitalDonorController);
 
 router.post("/signup", hospitalController.hospitalSignup.bind(hospitalController));
 router.post("/login", hospitalController.hospitalLogin.bind(hospitalController));
@@ -20,6 +20,7 @@ router.post("/verify-otp", hospitalController.verifyOtp.bind(hospitalController)
 router.post("/reset-password", hospitalController.resetPassword.bind(hospitalController));
 
 router.get("/donor-requests", donorController.getAllDonorRequests.bind(donorController));
+router.get("/donor/:id", donorController.getSingleReqDonor.bind(donorController));
 router.patch("/donor-request/:id/status", donorController.updateDonorStatus.bind(donorController));
 
 export default router;

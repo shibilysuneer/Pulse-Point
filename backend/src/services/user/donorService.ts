@@ -8,7 +8,7 @@ import { IDonorRepository } from "../../repositories/user/interface/IDonorReposi
 @injectable()
 export class DonorService implements IDonorService {
   constructor(
-    @inject(TYPES.DonorRepository) private donorRepo: IDonorRepository
+    @inject(TYPES.UserDonorRepository) private donorRepo: IDonorRepository
   ) {}
 
   async createDonorRequest(donorData: IDonor): Promise<IDonor> {
@@ -21,5 +21,8 @@ export class DonorService implements IDonorService {
 
   async updateDonorStatus(id: string, status: string): Promise<IDonor | null> {
     return await this.donorRepo.updateDonorStatus(id, status);
+  }
+    async getSingleReqDonor(id: string): Promise<IDonor | null> { // ✅ Add this method
+    return await this.donorRepo.getDonorById(id);
   }
 }

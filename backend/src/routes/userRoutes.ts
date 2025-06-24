@@ -7,7 +7,7 @@ import { DonorController } from "../controllers/user/donorController";
 const router = express.Router();
 
 const userController = container.get<IUserController>(TYPES.UserController);
-const donorController = container.get<DonorController>(TYPES.DonorController);
+const donorController = container.get<DonorController>(TYPES.UserDonorController);
 
 
 router.post("/signup", userController.userSignup.bind(userController));

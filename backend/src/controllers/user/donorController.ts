@@ -3,11 +3,12 @@ import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
 import TYPES from "../../config/inversify/types";
 import { IDonorService } from "../../services/user/interface/IDonorService";
+import { IUserDonorController } from "./interface/IDonorController";
 
 @injectable()
-export class DonorController {
+export class DonorController implements IUserDonorController{
   constructor(
-    @inject(TYPES.DonorService) private donorService: IDonorService
+    @inject(TYPES.UserDonorService) private donorService: IDonorService
   ) {}
 
   async handleDonorRequest(req: Request, res: Response): Promise<void> {
