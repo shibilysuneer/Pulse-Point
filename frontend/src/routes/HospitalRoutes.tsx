@@ -8,6 +8,7 @@ import VerifyOtp from "../pages/hospitalPages/VerifyOtp";
 import ResetPassword from "../pages/hospitalPages/ResetPassword";
 import ProtectedAuthRoute from "../components/hospital/ProtectedAuthRoute";
 import PrivateRoute from "../components/hospital/PrivateRoute";
+import HospitalLayout from "../components/hospital/HospitalLayout";
 
 const HospitalRoutes = () => {
   return (
@@ -23,7 +24,9 @@ const HospitalRoutes = () => {
 </Route>
    
       <Route element={<PrivateRoute/>}>
+      <Route element={<HospitalLayout />}>
     <Route path="/home" element={<HospitalHome />} />
+    </Route>
   </Route>
    </Routes>
   )

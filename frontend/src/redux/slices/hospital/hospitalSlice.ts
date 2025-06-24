@@ -1,6 +1,6 @@
 import { createAsyncThunk,createSlice } from "@reduxjs/toolkit";
 import type { GoogleLoginReq, LoginRequest, SignupHospitalRequest } from "../../../types/authTypes";
-import { loginHospital,signupHospital,
+import { loginHospital,signupHospital,logoutHospital,
   sendOtpHospital,resendOtpHospital,
   verifyOtpHospital,verifyPasswordHospital
  } from "../../../services/hospital/authService";
@@ -20,21 +20,25 @@ const initialState: HospitalState = {
   error: null,
   message: null,
 };
-export const hospitalLogin= createAsyncThunk('hospital/login',
-    async(data:LoginRequest,{rejectWithValue})=>{
-        try {
-            const response = await loginHospital(data)
-             console.log("loginHospital response:", response);
-      return response;
-        } catch (error:any) {
-          console.error("err", error);
-            const message = error.response?.data?.error || "Login failed";
+export const hospitalLogin = createAsyncThunk(
+  'hospital/login',
+  async (data: LoginRequest, { rejectWithValue }) => {
+    try {
+      const response = await loginHospital(data); // assume this returns { token, hospital }
+      console.log("loginHospital response:", response);
 
+    
+      localStorage.setItem('hospital_token', response.accesstoken);
+      localStorage.setItem('hospital_role', 'hospital');
+
+      return response;
+    } catch (error: any) {
+      console.error("err", error);
+      const message = error.response?.data?.error || "Login failed";
       return rejectWithValue(message);
-      // return rejectWithValue(error.response?.data?.message || "Login failed");  
-        }
     }
-)
+  }
+);
 
 export const hospitalSignup = createAsyncThunk(
   "hospital/signup",
@@ -42,10 +46,25 @@ export const hospitalSignup = createAsyncThunk(
     try {
       const response = await signupHospital(data);
       console.log("signupHospital response:", response);
+      localStorage.setItem('hospital_token', response.accesstoken);
+      localStorage.setItem('hospital_role', 'hospital');
       return response;
     } catch (error: any) {
       console.error("err", error);
       return rejectWithValue(error.response?.data?.message || "Signup failed");
+    }
+  }
+);
+export const hospitalLogout = createAsyncThunk(
+  'hospital/logout',
+  async (_, { rejectWithValue }) => {
+    try {
+      await logoutHospital(); 
+      localStorage.removeItem('hospital_token');
+      localStorage.removeItem('hospital_role');
+      return true;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || error.message);
     }
   }
 );
@@ -155,6 +174,15 @@ const hospitalSlice = createSlice({
       state.loading = false;
       state.error = action.payload as string;
     })
+
+    .addCase(hospitalLogout.fulfilled, (state) => {
+  state.hospital = null;
+  state.message = "Logout successful";
+  state.error = null;
+})
+.addCase(hospitalLogout.rejected, (state, action) => {
+  state.error = action.payload as string;
+})
 
     // Send OTP
 .addCase(sendOtp.pending, (state) => {

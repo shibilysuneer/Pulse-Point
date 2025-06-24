@@ -54,7 +54,6 @@ export class UserController implements IUserController {
   }
 async userLogout(_req: Request, res: Response): Promise<void> {
   try {
-    // Since JWT is in localStorage and stateless, no server cleanup needed
     res.status(200).json({ message: "User logged out successfully" });
   } catch (error: any) {
     console.error("Logout Error:", error);

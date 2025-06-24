@@ -1,43 +1,45 @@
 
-// import React from 'react';
-import { Link,useLocation } from "react-router-dom";
 
-function Header() {
-  const location = useLocation();
-  const currentPath = location.pathname;
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../redux/hooks";
+import { hospitalLogout } from "../../redux/slices/hospital/hospitalSlice";
+
+function HospitalHeader() {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const handleSignOut = async () => {
+    const resultAction = await dispatch(hospitalLogout());
+    console.log("Logout Result:", resultAction);
+    if (hospitalLogout.fulfilled.match(resultAction)) {
+        console.log("navigating to signin");
+      navigate("/hospital/signin");
+    } else {
+      console.error("Logout failed");
+    }
+  };
 
   return (
     <header className="flex justify-between items-center px-8 py-4 bg-white shadow">
-      <div className="text-red-600 font-bold text-lg">🩸 PULSE POINT</div>
-      <nav className="flex space-x-12 text-gray-500 font-medium font-mono uppercase tracking-wide">
-        <a href="#">HOME</a>
-        <a href="#">NEED BLOOD</a>
-        <a href="#">DONOR</a>
-        <a href="#">NOTIFICATION</a>
-        <a href="#">REQUESTERS</a>
-        <a href="#">SUBSCRIPTION</a>
+      <div className="text-red-600 font-bold text-lg">🏥 PULSE POINT HOSPITAL</div>
 
+      <nav className="flex space-x-10 text-gray-600 font-medium font-mono uppercase tracking-wide">
+        <Link to="/hospital/home">HOME</Link>
+        <Link to="/hospital/requests">REQUESTERS</Link>
+        <Link to="/hospital/need-blood">NEED BLOOD</Link>
+        <Link to="/hospital/notification">NOTIFICATION</Link>
+        <Link to="/hospital/donor">DONOR</Link>
+        <Link to="/hospital/subscription">SUBSCRIPTION</Link>
       </nav>
-       {/* <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full">Sign Up</button> */}
 
-       {currentPath === '/hospital/signin' ? (
-        <Link
-          to="/hospital/signup"
-          className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-full"
-        >
-          Sign Up
-        </Link>
-      ) : currentPath === '/hospital/signup' ? (
-        <Link
-          to="/hospital/signin"
-          className="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-full"
-        >
-          Sign In
-        </Link>
-      ) : null}
+      <button
+        onClick={handleSignOut}
+        className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full ml-4"
+      >
+        Sign Out
+      </button>
     </header>
   );
 }
 
-export default Header;
-
+export default HospitalHeader;

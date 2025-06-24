@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedAuthRoute = () => {
-  const token = localStorage.getItem("hospitalToken");
+  const token = localStorage.getItem("hospital_token");
 
 if (token) {
     return <Navigate to="/hospital/home" replace />;
