@@ -9,6 +9,7 @@ import ResetPassword from "../pages/hospitalPages/ResetPassword";
 import ProtectedAuthRoute from "../components/hospital/ProtectedAuthRoute";
 import PrivateRoute from "../components/hospital/PrivateRoute";
 import HospitalLayout from "../components/hospital/HospitalLayout";
+import DonorRequesters from "../pages/hospitalPages/DonorRequesters";
 
 const HospitalRoutes = () => {
   return (
@@ -26,6 +27,7 @@ const HospitalRoutes = () => {
       <Route element={<PrivateRoute/>}>
       <Route element={<HospitalLayout />}>
     <Route path="/home" element={<HospitalHome />} />
+    <Route path="/donor-requests" element={<DonorRequesters />} />
     </Route>
   </Route>
    </Routes>

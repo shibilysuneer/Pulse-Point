@@ -25,7 +25,7 @@ function HospitalHeader() {
 
       <nav className="flex space-x-10 text-gray-600 font-medium font-mono uppercase tracking-wide">
         <Link to="/hospital/home">HOME</Link>
-        <Link to="/hospital/requests">REQUESTERS</Link>
+        <Link to="/hospital/donor-requests">REQUESTERS</Link>
         <Link to="/hospital/need-blood">NEED BLOOD</Link>
         <Link to="/hospital/notification">NOTIFICATION</Link>
         <Link to="/hospital/donor">DONOR</Link>
