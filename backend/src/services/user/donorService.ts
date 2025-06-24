@@ -22,7 +22,7 @@ export class DonorService implements IDonorService {
   async updateDonorStatus(id: string, status: string): Promise<IDonor | null> {
     return await this.donorRepo.updateDonorStatus(id, status);
   }
-    async getSingleReqDonor(id: string): Promise<IDonor | null> { // ✅ Add this method
+    async getSingleReqDonor(id: string): Promise<IDonor | null> { 
     return await this.donorRepo.getDonorById(id);
   }
 }

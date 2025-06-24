@@ -8,7 +8,7 @@ import {ProtectedAuthRoute,ProtectedRoute} from "../components/admin/ProtectAuth
 import ForgotPassword from "../pages/adminPages/ForgotPassword";
 import Unauthorized from "../pages/adminPages/Unauthorized";
 import AdminLayout from "../components/admin/AdminLayout";
-import AdminDonor from "../pages/adminPages/Donors";
+import AdminDonor from "../pages/adminPages/AdminDonors";
 
 const AdminRoutes =() => {
     return (

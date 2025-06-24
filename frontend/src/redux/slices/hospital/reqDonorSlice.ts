@@ -3,29 +3,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getDonorById, getDonorRequests, updateDonorStatus } from "../../../services/hospital/reqDonorService";
 import type { DonorFormData as Donor } from "../../../types/donorTypes" 
 
-// interface Donor {
-//   _id: string;
-//   username: string;
-//   bloodGroup: string;
-//   location: string;
-//   gender: string;
-//   status: string;
-//   age: string;
-//    phone: string;
-//   address: string;
-//   donatedBefore: "yes" | "no";
-//   lastDonatedDate?: string | null;
-//   height: string;
-//   weight: string;
-//   regularMedicine: boolean;
-//   tattoo: boolean;
-//   minorSurgery: boolean;
-//   majorSurgery: boolean;
-//   dentalExtraction: boolean;
-//   repeatedDiarrhoea: boolean;
- 
-// }
-
 interface DonorState {
   donorRequests: Donor[];
   selectedDonor: Donor | null;
@@ -118,6 +95,7 @@ const donorSlice = createSlice({
         }
       })
       //change
+      
     //   .addCase(changeDonorStatus.fulfilled, (state, action) => {
     //     const { id, status } = action.payload;
 

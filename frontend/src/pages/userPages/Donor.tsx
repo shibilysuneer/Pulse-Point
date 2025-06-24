@@ -5,9 +5,18 @@ import { toast } from "react-toastify";
 import type { DonorFormData } from "../../types/donorTypes";
 import { useNavigate } from "react-router-dom";
 
+const isLessThan3Months = (lastDate: string): boolean => {
+  const lastDonated = new Date(lastDate);
+  const today = new Date();
+  const threeMonthsAgo = new Date();
+  threeMonthsAgo.setMonth(today.getMonth() - 3);
+  return lastDonated > threeMonthsAgo;
+};
+
 const DonorRequestForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
+  const [dateError, setDateError] = useState("");
   const [formData, setFormData] = useState<DonorFormData>({
     username: "",
     age: "",
@@ -38,6 +47,16 @@ const DonorRequestForm = () => {
 
  const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
+   if (
+    formData.donatedBefore === "yes" &&
+    formData.lastDonatedDate &&
+    isLessThan3Months(formData.lastDonatedDate)
+  ) {
+    setDateError("You must wait at least 3 months after your last donation.");
+    return;
+  }
+
+  setDateError(""); 
   try {
     const dataToSubmit = { ...formData };
     if (formData.donatedBefore === "no") {
@@ -87,7 +106,10 @@ const DonorRequestForm = () => {
             <label><input type="radio" name="donatedBefore" value="no" checked={formData.donatedBefore === "no"} onChange={handleChange} /> No</label>
           </div>
           {formData.donatedBefore === "yes" && (
+             <>
             <input type="date" name="lastDonatedDate" className="input mt-2" value={formData.lastDonatedDate||""} onChange={handleChange} />
+            {dateError && <p className="text-sm text-red-600 mt-1">{dateError}</p>}
+            </>
           )}
         </div>
 

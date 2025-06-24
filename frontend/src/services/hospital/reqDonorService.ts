@@ -10,7 +10,7 @@ export const getDonorById = async (id: string) => {
   return response.data;
 };
 export const updateDonorStatus = async (id: string, status: string) => {
-  const response = await HospitalAPI.patch(`/hospital/donor/${id}/status`, {
+  const response = await HospitalAPI.patch(`/donor-request/${id}/status`, {
     status,
   });
    return response.data;
