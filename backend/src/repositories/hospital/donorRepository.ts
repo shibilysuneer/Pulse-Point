@@ -25,4 +25,22 @@ export class DonorRepository implements IDonorRepository {
       { new: true }
     );
   }
+//    async getApprovedDonors(): Promise<IDonor[]> {
+//     return await DonorRequester.find({ status: "approved" });
+//   }
+
+//   async toggleDonorStatus(id: string, status: string): Promise<IDonor | null> {
+//     return await DonorRequester.findByIdAndUpdate(
+//       id,
+//       { status },
+//       { new: true }
+//     );
+//   }
+// async updateBlockStatus(id: string, isBlocked: boolean): Promise<IDonor | null> {
+//     return await DonorRequester.findByIdAndUpdate(
+//       id,
+//       { isBlocked },
+//       { new: true }
+//     );
+//   }
 }

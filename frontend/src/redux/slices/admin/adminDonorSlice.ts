@@ -1,17 +1,23 @@
 // redux/slices/admin/adminDonorSlice.ts
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { DonorFormData } from '../../../types/donorTypes';
-import { getAllDonors,toggleDonorsStatus} from '../../../services/admin/donorService';
+import { getAllDonors,
+    getDonorById,
+    // toggleDonorsStatus
+    toggleDonorBlockService,
+} from '../../../services/admin/donorService';
 
 
 interface DonorState {
   donors: DonorFormData[];
+  selectedDonor: DonorFormData | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: DonorState = {
   donors: [],
+   selectedDonor: null,
   loading: false,
   error: null,
 };
@@ -22,18 +28,34 @@ export const fetchAdminDonors = createAsyncThunk("admin/fetchDonors", async (_, 
     return thunkAPI.rejectWithValue(err.response?.data?.message || "Failed to fetch donors");
   }
 });
-export const toggleDonorStatus = createAsyncThunk(
-  "admin/toggleDonorStatus",
-  async ({ id, status }: { id: string; status: string }, thunkAPI) => {
+
+export const adToggleDonorBlock = createAsyncThunk(
+  "admin/toggleDonorBlock",
+  async (
+    { donorId, isBlocked }: { donorId: string; isBlocked: boolean },
+    thunkAPI
+  ) => {
     try {
-      const updatedDonor = await toggleDonorsStatus(id, status);
-      return updatedDonor;
-    } catch (err: any) {
-      return thunkAPI.rejectWithValue(err.response?.data?.message || "Failed to update status");
+      const response = await toggleDonorBlockService(donorId, isBlocked);
+      return response; // updated donor
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data?.message || "Failed to toggle donor status."
+      );
     }
   }
 );
-
+export const fetchSingleDonorByAdmin = createAsyncThunk(
+  "admin/fetchSingleDonor",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const response = await getDonorById(id); // make sure this function exists
+      return response;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.message || "Failed to fetch donor");
+    }
+  }
+);
 
 const donorSlice = createSlice({
   name: "adminDonor",
@@ -53,16 +75,30 @@ const donorSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
-      .addCase(toggleDonorStatus.fulfilled, (state, action) => {
+      .addCase(adToggleDonorBlock.fulfilled, (state, action) => {
   const updated = action.payload;
   const index = state.donors.findIndex(d => d._id === updated._id);
   if (index !== -1) {
-    state.donors[index].status = updated.status;
+    state.donors[index].isBlocked  = updated.isBlocked ;
   }
 })
-.addCase(toggleDonorStatus.rejected, (state, action) => {
+.addCase(adToggleDonorBlock.rejected, (state, action) => {
   state.error = action.payload as string;
-});
+})
+.addCase(fetchSingleDonorByAdmin.pending, (state) => {
+  state.loading = true;
+  state.selectedDonor = null;
+})
+.addCase(fetchSingleDonorByAdmin.fulfilled, (state, action) => {
+  state.loading = false;
+  state.selectedDonor = action.payload;
+})
+.addCase(fetchSingleDonorByAdmin.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload as string;
+  state.selectedDonor = null;
+})
+
   },
 });
 

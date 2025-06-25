@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
-import { fetchDonorRequests } from "../../redux/slices/hospital/reqDonorSlice";
+import { fetchDonorRequests,hosToggleDonorBlock } from "../../redux/slices/hospital/reqDonorSlice";
 
 const HosDonors = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,9 +16,9 @@ const HosDonors = () => {
     dispatch(fetchDonorRequests());
   }, [dispatch]);
 
-  // ✅ Filter only approved donors
+  // Filter only approved donors
   const approvedDonors = donorRequests?.filter(
-    (donor: any) => donor.status === "approved"
+    (donor: any) => donor.status === "approved" 
   );
 
   return (
@@ -41,6 +41,7 @@ const HosDonors = () => {
               <th className="p-2 border">Gender</th>
               <th className="p-2 border">Phone</th>
               <th className="p-2 border">View</th>
+              <th className="p-2 border">Block</th>
             </tr>
           </thead>
           <tbody>
@@ -59,6 +60,20 @@ const HosDonors = () => {
                     View
                   </button>
                 </td>
+                <td className="p-2 border">
+  <button
+    className={`px-3 py-1 rounded text-xs ${
+      donor.isBlocked ? "bg-green-500 hover:bg-green-600" : "bg-red-500 hover:bg-red-600"
+    } text-white`}
+    onClick={() =>{ 
+      dispatch(hosToggleDonorBlock({ id: donor._id, isBlocked: !donor.isBlocked }))
+    }
+    }
+  >
+    {donor.isBlocked ? "Unblock" : "Block"}
+  </button>
+</td>
+                
               </tr>
             ))}
           </tbody>

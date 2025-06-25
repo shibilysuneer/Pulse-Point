@@ -4,11 +4,14 @@ import { inject, injectable } from "inversify";
 import TYPES from "../../config/inversify/types";
 import { IDonorService } from "../../services/user/interface/IDonorService";
 import { IDonorController } from "./interface/IDonorController";
+// import { IAdminDonorService } from "../../services/admin/interface/IAdminDonorService";
 
 @injectable()
 export class DonorController implements IDonorController{
   constructor(
-    @inject(TYPES.HospitalDonorService) private donorService: IDonorService
+    @inject(TYPES.HospitalDonorService) private donorService: IDonorService,
+        // @inject(TYPES.AdminDonorService) private adminDonorService: IAdminDonorService
+
   ) {}
 
   // Handle donor form submission
@@ -68,4 +71,37 @@ export class DonorController implements IDonorController{
       res.status(500).json({ message: "Failed to update status" });
     }
   }
+  async hosToggleBlockStatus(req: Request, res: Response): Promise<void> {
+  try {
+    const { id } = req.params;
+    const { isBlocked } = req.body;
+
+    const updatedDonor = await this.donorService.hosToggleBlockStatus(id, isBlocked);
+    res.status(200).json(updatedDonor);
+  } catch (error) {
+    console.error("Error toggling block status:", error);
+    res.status(500).json({ message: "Failed to toggle block status" });
+  }
+}
+
+
+//   async getApprovedDonors(_req: Request, res: Response) {
+//     try {
+//       const donors = await this.adminDonorService.getApprovedDonors();
+//       res.status(200).json(donors);
+//     } catch (error) {
+//       res.status(500).json({ message: "Failed to fetch donors" });
+//     }
+//   }
+
+//   async toggleDonorStatus(req: Request, res: Response) {
+//     try {
+//       const { id } = req.params;
+//       const { status } = req.body;
+//       const updated = await this.adminDonorService.toggleDonorStatus(id, status);
+//       res.status(200).json(updated);
+//     } catch (error) {
+//       res.status(500).json({ message: "Failed to toggle donor status" });
+//     }
+//   }
 }

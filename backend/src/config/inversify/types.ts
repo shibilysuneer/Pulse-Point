@@ -31,5 +31,9 @@ const TYPES={
     // DonorService: Symbol.for("DonorService"),
     // DonorRepository: Symbol.for("DonorRepository"),
     // DonorController: Symbol.for("DonorController"),
+  AdminDonorService: Symbol.for("AdminDonorService"),
+ AdminDonorRepository: Symbol.for("AdminDonorRepository"),
+AdminDonorController: Symbol.for("AdminDonorController"),
+
 }
 export default TYPES;

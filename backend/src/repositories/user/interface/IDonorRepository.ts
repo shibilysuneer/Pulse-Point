@@ -6,4 +6,6 @@ export interface IDonorRepository {
   getAllDonorRequests(): Promise<IDonor[]>;
   getDonorById(id: string): Promise<IDonor | null>;
   updateDonorStatus(id: string, status: string): Promise<IDonor | null>;
+  updateBlockStatus(id: string, isBlocked: boolean): Promise<IDonor | null>;
+
 }

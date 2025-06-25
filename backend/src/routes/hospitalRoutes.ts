@@ -22,5 +22,7 @@ router.post("/reset-password", hospitalController.resetPassword.bind(hospitalCon
 router.get("/donor-requests", donorController.getAllDonorRequests.bind(donorController));
 router.get("/donor/:id", donorController.getSingleReqDonor.bind(donorController));
 router.patch("/donor-request/:id/status", donorController.updateDonorStatus.bind(donorController));
+router.patch("/donors/:id/block", donorController.hosToggleBlockStatus.bind(donorController));
+
 
 export default router;

@@ -1,6 +1,6 @@
 // src/redux/slices/hospital/donorSlice.ts
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getDonorById, getDonorRequests, updateDonorStatus } from "../../../services/hospital/reqDonorService";
+import { getDonorById, getDonorRequests, hoToggleDonorBlockService, updateDonorStatus } from "../../../services/hospital/reqDonorService";
 import type { DonorFormData as Donor } from "../../../types/donorTypes" 
 
 interface DonorState {
@@ -54,6 +54,17 @@ export const changeDonorStatus = createAsyncThunk(
     }
   }
 );
+export const hosToggleDonorBlock = createAsyncThunk(
+  "hospital/toggleDonorBlock",
+  async ({ id, isBlocked }: { id: string; isBlocked: boolean }, thunkAPI) => {
+    try {
+      return await hoToggleDonorBlockService(id, isBlocked);
+    } catch (err: any) {
+      return thunkAPI.rejectWithValue("Failed to toggle donor block status");
+    }
+  }
+);
+
 const donorSlice = createSlice({
   name: "donor",
   initialState,
@@ -94,6 +105,14 @@ const donorSlice = createSlice({
           donor.status = status;
         }
       })
+      .addCase(hosToggleDonorBlock.fulfilled, (state, action) => {
+  const updated = action.payload;
+  const index = state.donorRequests.findIndex(d => d._id === updated._id);
+  if (index !== -1) {
+    state.donorRequests[index].isBlocked = updated.isBlocked;
+  }
+})
+
       //change
       
     //   .addCase(changeDonorStatus.fulfilled, (state, action) => {

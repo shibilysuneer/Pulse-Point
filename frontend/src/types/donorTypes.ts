@@ -22,4 +22,5 @@ export interface DonorFormData {
   createdAt?: string;
   updatedAt?: string;
   status?: "pending" | "approved" | "rejected";
+   isBlocked?: boolean;
 }

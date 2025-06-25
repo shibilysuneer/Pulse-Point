@@ -15,3 +15,7 @@ export const updateDonorStatus = async (id: string, status: string) => {
   });
    return response.data;
 };
+export const hoToggleDonorBlockService = async (id: string, isBlocked: boolean) => {
+  const response = await HospitalAPI.patch(`/donors/${id}/block`, { isBlocked });
+  return response.data;
+};

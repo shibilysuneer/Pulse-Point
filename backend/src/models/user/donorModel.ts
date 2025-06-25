@@ -25,7 +25,10 @@ const donorRequesterSchema  = new mongoose.Schema({
     type: String,
     enum: ["pending", "approved", "rejected"],
     default: "pending"
-  }
+  },isBlocked: {
+  type: Boolean,
+  default: false,
+}
 }, {
   timestamps: true,
 });

@@ -26,4 +26,11 @@ export class DonorRepository implements IDonorRepository {
       { new: true }
     );
   }
+  async updateBlockStatus(id: string, isBlocked: boolean): Promise<IDonor | null> {
+      return await DonorRequester.findByIdAndUpdate(
+        id,
+        { isBlocked },
+        { new: true }
+      );
+    }
 }

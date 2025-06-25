@@ -38,6 +38,12 @@ import { IDonorController as IHospitalDonorController } from "../../controllers/
 import { DonorController as HospitalDonorController } from "../../controllers/hospital/donorController";
 import { IUserDonorController } from "../../controllers/user/interface/IDonorController";
 
+import { AdminDonorController } from "../../controllers/admin/adminDonorController";
+import { IAdminDonorController } from "../../controllers/admin/interface/IAdminDonorController";
+import { AdminDonorService } from "../../services/admin/adminDonorService"
+import { IAdminDonorService } from"../../services/admin/interface/IAdminDonorService"
+import { AdminDonorRepository } from "../../repositories/admin/adminDonorRepository";
+import { IAdminDonorRepository} from "../../repositories/admin/interface/IAdminDonorRepository";
 const container = new Container();
 //admin  
 container.bind<IAdminAuthService>(TYPES.AuthService).to(authService)
@@ -64,4 +70,10 @@ container.bind<IDonorRepository>(TYPES.UserDonorRepository).to(DonorRepository);
 
 container.bind<IHospitalDonorController>(TYPES.HospitalDonorController).to(HospitalDonorController);
 container.bind<IUserDonorController>(TYPES.UserDonorController).to(UserDonorController);
+
+container.bind<IAdminDonorService>(TYPES.AdminDonorService).to(AdminDonorService);
+// container.bind<IDonorRepository>(TYPES.AdminDonorRepository).to(AdminDonorRepository);
+container.bind<IAdminDonorRepository>(TYPES.AdminDonorRepository).to(AdminDonorRepository);
+container.bind<IAdminDonorController>(TYPES.AdminDonorController).to(AdminDonorController);
+
 export default container;
