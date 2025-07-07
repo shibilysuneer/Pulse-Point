@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import {
   fetchDonorRequests,
 } from "../../redux/slices/hospital/reqDonorSlice";
+import { Pagination } from "antd";
+import usePagination from "../../hooks/usePagination";
 
 const DonorRequesters = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -13,6 +15,14 @@ const DonorRequesters = () => {
   const { donorRequests, loading } = useSelector(
     (state: RootState) => state.reqDonor
   );
+ const {
+    currentPage,
+    setCurrentPage,
+    pageSize,
+    search,
+  setSearch,
+  // resetPage
+  } = usePagination();
 
   useEffect(() => {
     dispatch(fetchDonorRequests());
@@ -25,6 +35,19 @@ const DonorRequesters = () => {
 //   const handleStatusUpdate = (id: string, status: "approved" | "rejected") => {
 //     dispatch(changeDonorStatus({ id, status }));
 //   };
+ // ✅ Add this before pagination slicing
+const filteredDonors = donorRequests.filter((donor: any) =>
+  donor.username.toLowerCase().includes(search.toLowerCase()) ||
+  donor.location.toLowerCase().includes(search.toLowerCase())||
+  donor.bloodGroup.toLowerCase().includes(search.toLowerCase())
+
+);
+
+// ✅ Then paginate the filtered list
+const startIndex = (currentPage - 1) * pageSize;
+const endIndex = startIndex + pageSize;
+const paginatedDonors = filteredDonors.slice(startIndex, endIndex);
+
 
   return (
     <div className="p-6">
@@ -35,6 +58,17 @@ const DonorRequesters = () => {
       {loading ? (
         <p className="text-center text-gray-500">Loading donor requests...</p>
       ) : (
+        <>
+        <div className="mb-4 flex justify-center">
+  <input
+    type="text"
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    placeholder="Search by name or location"
+    className="px-3 py-2 border rounded w-full max-w-md"
+  />
+</div>
+
         <table className="w-full table-auto border text-sm">
           <thead className="bg-gray-100">
             <tr>
@@ -47,7 +81,7 @@ const DonorRequesters = () => {
             </tr>
           </thead>
           <tbody>
-            {donorRequests.map((donor: any) => (
+            {paginatedDonors.map((donor: any) => (
               <tr key={donor._id} className="text-center">
                 <td className="p-2 border">{donor.username}</td>
                 <td className="p-2 border">{donor.bloodGroup}</td>
@@ -60,7 +94,12 @@ const DonorRequesters = () => {
                         ? "text-green-500"
                         : donor.status === "rejected"
                         ? "text-red-500"
-                        : "text-yellow-500"
+                         : donor.status === "pending"
+                         ? "text-yellow-500"
+                         : donor.status === "cancelled"
+                         ? "text-gray-400"
+                         : "text-black"
+                        // : "text-yellow-500"
                     }`}
                   >
                     {donor.status}
@@ -94,6 +133,17 @@ const DonorRequesters = () => {
             ))}
           </tbody>
         </table>
+         {/* ✅ Pagination control */}
+          <div className="mt-4 flex justify-center">
+            <Pagination
+              current={currentPage}
+              pageSize={pageSize}
+              total={filteredDonors.length}
+              onChange={setCurrentPage}
+              showSizeChanger={false}
+            />
+          </div>
+        </>
       )}
     </div>
   );

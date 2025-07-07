@@ -7,5 +7,7 @@ export interface IDonorService {
   updateDonorStatus(id: string, status: string): Promise<IDonor | null>;
   getSingleReqDonor(id: string): Promise<IDonor | null>;
   hosToggleBlockStatus(id: string, isBlocked: boolean): Promise<IDonor | null>;
-  
+  getMyDonorRequest(userId: string): Promise<IDonor | null>;
+  cancelDonorRequest(requestId: string, userId: string): Promise<void>;
+
 }

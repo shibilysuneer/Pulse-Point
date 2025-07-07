@@ -7,6 +7,7 @@ import UserLayout from '../components/user/UserLayout';
 import UserHome from '../pages/userPages/UserHome';
 import ForgotUserPassword from '../pages/userPages/ForgotPassword';
 import Donor from "../pages/userPages/Donor"
+// import UserDonorRequests from '../pages/userPages/UserRequests';
 function UserRoutes() {
   return (
     <Routes>
@@ -21,6 +22,8 @@ function UserRoutes() {
        <Route element={<UserLayout/>}>
         <Route path="/home" element={<UserHome />} />
          <Route path="/donor" element={<Donor />} />
+         {/* <Route path="/requests" element={<UserDonorRequests />} /> */}
+
         </Route>
       </Route>
     </Routes>

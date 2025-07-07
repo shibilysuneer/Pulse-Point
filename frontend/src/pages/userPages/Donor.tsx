@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAppDispatch } from "../../redux/hooks";
 import { createDonorRequest } from "../../redux/slices/user/donorSlice";
 import { toast } from "react-toastify";
 import type { DonorFormData } from "../../types/donorTypes";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../redux/store";
+import { fetchMyDonorRequest,cancelDonorRequest,clearDonorRequest  } from "../../redux/slices/user/donorSlice";
 
 const isLessThan3Months = (lastDate: string): boolean => {
   const lastDonated = new Date(lastDate);
@@ -16,6 +19,13 @@ const isLessThan3Months = (lastDate: string): boolean => {
 const DonorRequestForm = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate()
+
+const { loading,request  } = useSelector((state: RootState) => state.donor);
+
+useEffect(() => {
+  dispatch(fetchMyDonorRequest());
+}, [dispatch]);
+
   const [dateError, setDateError] = useState("");
   const [formData, setFormData] = useState<DonorFormData>({
     username: "",
@@ -75,6 +85,91 @@ const DonorRequestForm = () => {
     toast.error(err.message || "Something went wrong");
   }
 };
+if (loading) {
+  return <div className="text-center mt-10">Loading...</div>;
+}
+if (request && request.status === "approved") {
+    return (
+      <div className="max-w-xl mx-auto p-6 bg-green-50 rounded shadow mt-8 text-center">
+        <h2 className="text-2xl font-bold text-green-700">✅ You're already an approved donor!</h2>
+        <p className="mt-4 text-gray-700">
+          Thank you for registering as a donor.
+        </p>
+        <button
+          onClick={() => navigate('/user/home')}
+          className="mt-6 bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700"
+        >
+          Go to Home
+        </button>
+      </div>
+    );
+  }
+  if (request && request.status === "pending") {
+     const handleCancel = async () => {
+    try {
+       if (!request || !request._id) {
+      toast.error("Unable to cancel. Donor request ID not found.");
+      return;
+    }
+      await dispatch(cancelDonorRequest(request._id));
+      toast.success("Your donor request has been cancelled.");
+      dispatch(fetchMyDonorRequest()); // refresh state
+    } catch (error: any) {
+      toast.error(error.message || "Failed to cancel request");
+    }
+  };
+  return (
+    <div className="max-w-xl mx-auto p-6 bg-yellow-50 rounded shadow mt-8 text-center">
+      <h2 className="text-2xl font-bold text-yellow-700">⏳ Your request is pending approval</h2>
+      <p className="mt-4 text-gray-700">
+        Thank you for registering. Please wait while our team reviews your request.
+      </p>
+      <div className="mt-6 flex justify-center gap-4">
+        <button
+          onClick={() => navigate('/user/home')}
+          className="bg-yellow-600 text-white px-5 py-2 rounded hover:bg-yellow-700"
+        >
+          Go to Home
+        </button>
+        <button
+          onClick={handleCancel}
+          className="bg-red-600 text-white px-5 py-2 rounded hover:bg-red-700"
+        >
+          Cancel Registration
+        </button>
+      </div>
+    </div>
+  );
+}
+
+if (request && request.status === "rejected") {
+   const handleReapply = () => {
+    dispatch(clearDonorRequest());
+     navigate('/user/donor'); // optionally
+  };
+  return (
+    <div className="max-w-xl mx-auto p-6 bg-red-50 rounded shadow mt-8 text-center">
+      <h2 className="text-2xl font-bold text-red-700">❌ Your request was rejected</h2>
+      <p className="mt-4 text-gray-700">
+        Unfortunately, your donor request was rejected. 
+      </p>
+      <div className="mt-6 flex justify-center gap-4">
+      <button
+        onClick={() => navigate('/user/home')}
+        className="mt-6 bg-red-600 text-white px-5 py-2 rounded hover:bg-red-700"
+      >
+        Go to Home
+      </button>
+       <button
+  onClick={handleReapply}
+  className="mt-6 bg-red-600 text-white px-5 py-2 rounded hover:bg-red-700"
+>
+  Register Again
+</button>
+</div>
+    </div>
+  );
+}
 
   return (
     <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow mt-6">

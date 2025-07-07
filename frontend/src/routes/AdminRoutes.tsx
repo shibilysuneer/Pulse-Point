@@ -10,6 +10,8 @@ import Unauthorized from "../pages/adminPages/Unauthorized";
 import AdminLayout from "../components/admin/AdminLayout";
 import AdminDonor from "../pages/adminPages/AdminDonors";
 import AdDonorDetails from "../pages/adminPages/AdminDonorDetails";
+import HospitalRequesters from "../pages/adminPages/HospitalRequesters";
+import HospitalDetails from "../pages/adminPages/HospitalReqDetails";
 
 const AdminRoutes =() => {
     return (
@@ -23,6 +25,8 @@ const AdminRoutes =() => {
          <Route element={<AdminLayout/>}>
            <Route path="/dashboard" element={<AdminHome />} />
            <Route path="/hospitals" element={<AdminHospital />} />
+            <Route path="/hospitals-req" element={<HospitalRequesters />} />
+            <Route path="/hospitals/:id" element={<HospitalDetails />} />
            <Route path="/donors" element={<AdminDonor />} />
            <Route path="/donors/:id" element={<AdDonorDetails />} />
 

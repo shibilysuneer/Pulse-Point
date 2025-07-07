@@ -5,6 +5,7 @@ import TYPES from "../config/inversify/types";
 // import { IAdminHospitalController } from "../controllers/admin/interface/IHospitalController";
 import { AdminHospitalController } from "../controllers/admin/hospitalController";
 import { AdminDonorController } from "../controllers/admin/adminDonorController";
+import { authenticateHospitalAdmin } from "../middlewares/authMiddleware";
 // import { IDonorController } from "../controllers/hospital/interface/IDonorController";
 // const donorController = container.get<IDonorController>(TYPES.UserDonorController);
 
@@ -23,11 +24,15 @@ router.post('/verify-otp', adminController.verifyOtp.bind(adminController));
 router.post('/reset-password', adminController.resetPassword.bind(adminController));
 
 
-router.get("/hospitals", adminHospitalController.fetchHospitals.bind(adminHospitalController));
-router.patch("/hospitals/:id/block", adminHospitalController.toggleBlockStatus.bind(adminHospitalController));
+router.get("/hospitals",authenticateHospitalAdmin,adminHospitalController.fetchHospitals.bind(adminHospitalController));
+router.patch("/hospitals/:id/block",authenticateHospitalAdmin, adminHospitalController.toggleBlockStatus.bind(adminHospitalController));
+router.get("/pending-hospitals",authenticateHospitalAdmin, adminHospitalController.getPendingHospitals.bind(adminHospitalController));
+router.get("/hospitals/:id",authenticateHospitalAdmin, adminHospitalController.getHospitalById.bind(adminHospitalController));
+router.patch("/hospitals/:id/status", authenticateHospitalAdmin, adminHospitalController.updateHospStatus.bind(adminHospitalController));
 
-router.get("/donors", adminDonorController.getApprovedDonors.bind(adminDonorController));
-router.patch("/donors/:id/block", adminDonorController.toggleDonorBlock.bind(adminDonorController));
-router.get("/donors/:id", adminDonorController.getDonorById.bind(adminDonorController));
+router.get("/donors",authenticateHospitalAdmin, adminDonorController.getApprovedDonors.bind(adminDonorController));
+router.patch("/donors/:id/block",authenticateHospitalAdmin, adminDonorController.toggleDonorBlock.bind(adminDonorController));
+router.get("/donors/:id",authenticateHospitalAdmin, adminDonorController.getDonorById.bind(adminDonorController));
+
 
 export default router;

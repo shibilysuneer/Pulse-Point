@@ -10,9 +10,13 @@ export class AdminDonorController implements IAdminDonorController {
     @inject(TYPES.AdminDonorService) private adminDonorService: IAdminDonorService
   ) {}
 
-  async getApprovedDonors(_req: Request, res: Response): Promise<void> {
+  async getApprovedDonors(req: Request, res: Response): Promise<void> {
     try {
-      const donors = await this.adminDonorService.getApprovedDonors();
+       const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const search = (req.query.search as string) || "";
+
+      const donors = await this.adminDonorService.getApprovedDonors({ page, limit, search });
       res.status(200).json(donors);
     } catch (error) {
       console.error("Error fetching approved donors", error);

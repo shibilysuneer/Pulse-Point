@@ -11,7 +11,9 @@ export const loginAdmin =async(data:LoginRequest)=>{
        if (accesstoken  && admin) {
     localStorage.setItem("admin_token", accesstoken );
     localStorage.setItem("admin_role", admin.role);
-    return admin;
+    console.log("accesstoken:",accesstoken);
+    
+    return { accesstoken, admin };
   }
     
     // return response.data;
@@ -20,7 +22,7 @@ export const loginAdmin =async(data:LoginRequest)=>{
 
 
 export const getRefreshAccessToken = async () => {
-  const res = await AdminAPI.post("/refresh-token");
+  const res = await AdminAPI.post("/refresh-token", null, { withCredentials: true });
   console.log("refre-response",res);
   
   return res.data;

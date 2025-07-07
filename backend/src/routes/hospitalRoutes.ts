@@ -3,6 +3,7 @@ import container from "../config/inversify/container";
 import TYPES from "../config/inversify/types";
 import { IHospitalController } from "../controllers/hospital/interface/IHospitalController";
 import { IDonorController } from "../controllers/hospital/interface/IDonorController";
+import { authenticateHospital } from "../middlewares/authMiddleware";
 
 const router = express.Router()
 
@@ -18,11 +19,14 @@ router.post("/send-otp", hospitalController.sendOtp.bind(hospitalController));
 router.post("/resend-otp", hospitalController.resendOtp.bind(hospitalController));
 router.post("/verify-otp", hospitalController.verifyOtp.bind(hospitalController));
 router.post("/reset-password", hospitalController.resetPassword.bind(hospitalController));
+// router.post("/register-details", hospitalController.submitRegistrationDetails.bind(hospitalController));
 
 router.get("/donor-requests", donorController.getAllDonorRequests.bind(donorController));
 router.get("/donor/:id", donorController.getSingleReqDonor.bind(donorController));
 router.patch("/donor-request/:id/status", donorController.updateDonorStatus.bind(donorController));
 router.patch("/donors/:id/block", donorController.hosToggleBlockStatus.bind(donorController));
 
+router.post('/register-details',authenticateHospital,hospitalController.submitRegistrationDetails.bind(hospitalController)
+);
 
 export default router;

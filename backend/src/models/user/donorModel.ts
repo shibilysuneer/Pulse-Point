@@ -2,6 +2,11 @@
 import mongoose from "mongoose";
 
 const donorRequesterSchema  = new mongoose.Schema({
+   user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   username: { type: String, required: true },
   age: { type: String, required: true },
   bloodGroup: { type: String, required: true },
@@ -23,7 +28,7 @@ const donorRequesterSchema  = new mongoose.Schema({
 
   status: {
     type: String,
-    enum: ["pending", "approved", "rejected"],
+    enum: ["pending", "approved", "rejected","cancelled"],
     default: "pending"
   },isBlocked: {
   type: Boolean,

@@ -1,4 +1,5 @@
 import { IHospital, IHospitalDocument } from "../../../models/hospital/interfaces/hospitalInterface";
+import { FetchHospitalParams } from "../../../services/admin/interface/IHospitalService";
 
 export interface IHospitalRepository{
     findByEmail(email:string):Promise<IHospitalDocument | null>;
@@ -10,4 +11,25 @@ export interface IHospitalRepository{
 
     //  findByIdAndUpdate(id: string, update: Partial<IHospital>): Promise<IHospital | null>;
      findByIdAndUpdate(id: string, update: Partial<IHospital>): Promise<IHospital | null>;
+
+     updateRegistrationDetails(
+  hospitalId: string,
+  data: {
+    licenseNumber: string;
+    website?: string;
+    address: {
+      street: string;
+      city: string;
+      state: string;
+      zipCode: string;
+    };
+    status?: string;
+  }
+): Promise<IHospitalDocument | null>;
+
+
+getPendingHospitals(params: FetchHospitalParams): Promise<{ hospitals: IHospital[]; total: number }>;
+findById(id: string): Promise<IHospital | null>;
+updateStatus(id: string, status: "approved" | "rejected"): Promise<IHospital | null>;
+
 }

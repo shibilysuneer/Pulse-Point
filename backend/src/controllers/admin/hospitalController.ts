@@ -18,8 +18,9 @@ export class AdminHospitalController implements IAdminHospitalController {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const search = (req.query.search as string) || "";
+       const status = req.query.status as string || "";
 
-      const result = await this.hospitalService.fetchHospitals({ page, limit, search });
+      const result = await this.hospitalService.fetchHospitals({ page, limit, search,status });
       res.status(200).json(result);
     } catch (error) {
      console.error("Error in fetching hospitals:", error);
@@ -43,4 +44,54 @@ export class AdminHospitalController implements IAdminHospitalController {
       res.status(500).json({ message: "Server error" });
     }
   }
+
+
+async getPendingHospitals (req: Request, res: Response): Promise<void> {
+  try {
+    const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 10;
+      const search = (req.query.search as string) || "";
+
+    const hospitals = await this.hospitalService.getPendingHospitals({page,limit,search});
+    res.status(200).json(hospitals);
+  } catch (error: any) {
+    console.error("Error fetching pending hospitals:", error);
+    res.status(500).json({ error: "Failed to fetch hospitals" });
+  }
+};
+
+async getHospitalById(req: Request, res: Response): Promise<void> {
+  try {
+    const { id } = req.params;
+    const hospital = await this.hospitalService.getHospitalById(id);
+
+    if (!hospital) {
+      res.status(404).json({ message: "Hospital not found" });
+      return;
+    }
+
+    res.status(200).json(hospital);
+  } catch (error) {
+    console.error("getHospitalById error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+async updateHospStatus(req: Request, res: Response): Promise<void> {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!["approved", "rejected"].includes(status)) {
+       res.status(400).json({ message: "Invalid status" });
+       return
+    }
+
+    const updated = await this.hospitalService.updateStatus(id, status);
+    res.status(200).json(updated);
+  } catch (error) {
+    console.error("updateStatus error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
 }

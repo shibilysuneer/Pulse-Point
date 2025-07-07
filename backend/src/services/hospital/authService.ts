@@ -10,7 +10,8 @@ import { HospitalSignupRequest,
     HospitalSignupResponse,
     HospitalLoginRequest,HospitalLoginResponse,
     HospitalGoogleLoginRequest,
-    HospitalGoogleLoginResponse
+    HospitalGoogleLoginResponse,
+    SubmitRegistrationDetailsRequest
  } from '../../types/hospital/authType'
 import { generateOtp } from '../../utils/otpUtils'
 import { OTPModel } from '../../models/hospital/otpModel'
@@ -24,8 +25,8 @@ export class HospitalAuthService implements IAuthService {
         
     ){}
     async signup(hospitalData:HospitalSignupRequest):Promise<HospitalSignupResponse>{
-        const {email,password,name,registrationNumber}=hospitalData;
-
+        const {email,password,name,registrationNumber,phone}=hospitalData;
+   
         const existingHospital = await this.hospitalRepository.findByEmail(email);
     if (existingHospital) {
       throw new Error("Hospital already exists");
@@ -38,9 +39,12 @@ export class HospitalAuthService implements IAuthService {
       password: hashedPassword,
       createdAt: new Date(),
       registrationNumber,
+      phone,
       role: "hospital",
        isBlocked: false, 
+       status: 'unregistered',
     });
+    console.log("newHospital",newHospital);
 
     const token = generateToken({
       _id: newHospital._id.toString(),
@@ -96,6 +100,7 @@ export class HospitalAuthService implements IAuthService {
         createdAt: new Date(),
         role: "hospital",
         isBlocked: false, 
+        status: 'unregistered'
       });
     }
 
@@ -166,4 +171,33 @@ async resetPassword(data: { email: string; newPassword: string }): Promise<{ mes
   await hospital.save();
   return { message: "Password reset successful" };
 }
+
+
+  async submitRegistrationDetails(
+    hospitalId: string,
+    data: SubmitRegistrationDetailsRequest
+  ): Promise<{ message: string; hospital: any }> {
+    if (!hospitalId) {
+      throw new Error("Hospital ID is required.");
+    }
+
+    const updatedHospital = await this.hospitalRepository.updateRegistrationDetails(
+    hospitalId,
+    {
+      licenseNumber: data.licenseNumber,
+      website: data.website,
+      address: data.address,
+      status: 'pending'
+    }
+  );
+
+  if (!updatedHospital) {
+    throw new Error("Hospital not found.");
+  }
+
+    return {
+      message: "Registration details submitted successfully",
+      hospital:updatedHospital
+    };
+  }
 }

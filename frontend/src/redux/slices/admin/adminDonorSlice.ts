@@ -6,6 +6,7 @@ import { getAllDonors,
     // toggleDonorsStatus
     toggleDonorBlockService,
 } from '../../../services/admin/donorService';
+import type { PaginationPayload } from '../../../types/commonTypes';
 
 
 interface DonorState {
@@ -13,6 +14,7 @@ interface DonorState {
   selectedDonor: DonorFormData | null;
   loading: boolean;
   error: string | null;
+  total:number
 }
 
 const initialState: DonorState = {
@@ -20,10 +22,11 @@ const initialState: DonorState = {
    selectedDonor: null,
   loading: false,
   error: null,
+  total: 0,
 };
-export const fetchAdminDonors = createAsyncThunk("admin/fetchDonors", async (_, thunkAPI) => {
+export const fetchAdminDonors = createAsyncThunk("admin/fetchDonors", async ({ page, limit,search }: PaginationPayload, thunkAPI) => {
   try {
-    return await getAllDonors();
+    return await getAllDonors({ page, limit,search });
   } catch (err: any) {
     return thunkAPI.rejectWithValue(err.response?.data?.message || "Failed to fetch donors");
   }
@@ -68,7 +71,8 @@ const donorSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchAdminDonors.fulfilled, (state, action) => {
-        state.donors = action.payload;
+        state.donors = action.payload.donors;
+         state.total = action.payload.total;
         state.loading = false;
       })
       .addCase(fetchAdminDonors.rejected, (state, action) => {

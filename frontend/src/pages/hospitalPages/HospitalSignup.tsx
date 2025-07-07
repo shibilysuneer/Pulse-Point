@@ -28,8 +28,8 @@ const HospitalSignup = () => {
     e.preventDefault();
     setError('');
     try {
-      const result = await dispatch(hospitalSignup(formData)).unwrap();
-      localStorage.setItem('hospitalToken', result.token);
+       await dispatch(hospitalSignup(formData)).unwrap();
+      // localStorage.setItem('hospitalToken', result.token);
       toast.success('Signup successful');
       navigate('/hospital/home');
     } catch (error:any) {

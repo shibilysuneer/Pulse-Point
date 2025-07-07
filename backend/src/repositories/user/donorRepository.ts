@@ -3,6 +3,7 @@ import { injectable } from "inversify";
 import { IDonor } from "../../models/user/interface/donorInterface";
 import { IDonorRepository } from "./interface/IDonorRepository";
 import DonorRequester from "../../models/user/donorModel";
+// import mongoose from "mongoose";
 
 @injectable()
 export class DonorRepository implements IDonorRepository {
@@ -33,4 +34,21 @@ export class DonorRepository implements IDonorRepository {
         { new: true }
       );
     }
+
+async getDonorRequestByUserId(userId: string): Promise<IDonor | null> {
+    return await DonorRequester.findOne({ user: userId }).sort({ createdAt: -1 });
+  }
+async cancelDonorRequest(requestId: string, userId: string): Promise<void> {
+  const donorRequest = await DonorRequester.findOne({
+    _id: requestId,
+    user: userId,
+
+  });
+
+  if (!donorRequest) {
+    throw new Error("Donor request not found");
+  }
+  donorRequest.status = "cancelled";
+  await donorRequest.save();
+}
 }

@@ -24,6 +24,7 @@ const dispatch = useAppDispatch()
      <nav className="flex space-x-12 text-gray-500 font-medium font-mono uppercase tracking-wide">
   <Link to="/admin/dashboard">DASHBOARD</Link>
   <Link to="/admin/donors">DONORS</Link>
+  <Link to="/admin/hospitals-req">HOSPITALREQUESTERS</Link>
   <Link to="/admin/hospitals">HOSPITALS</Link>
   <Link to="/admin/campaign">CAMPAIGN</Link>
   <Link to="/admin/subscription">SUBSCRIPTION</Link>

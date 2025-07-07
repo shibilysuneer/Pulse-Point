@@ -3,8 +3,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   fetchHospitalsService,
+  getHospitalByIdService,
+  getPendingHospitals,
   toggleHospitalBlockService,
-//   updateHospitalService,
+  updateHospitalStatusService,
 } from "../../../services/admin/hospitalService"
 import type { PaginationPayload } from "../../../types/commonTypes";
 import type { Hospital } from "../../../types/hospitalType";
@@ -14,6 +16,7 @@ interface AdminHospitalState {
   error: string | null;
   success: boolean;
   hospitals: Hospital[];
+  selectedHospital: Hospital | null;
   total: number;
 }
 
@@ -22,16 +25,30 @@ const initialState: AdminHospitalState = {
   error: null,
   success: false,
   hospitals: [],
+  selectedHospital: null,
   total: 0,
 };
-
+// ✅ Pending Fetch hospitals
+export const fetchPendingHospitals = createAsyncThunk(
+  "admin/fetchPendingHospitals",
+  async ({ page = 1, limit = 10, search = "" }: PaginationPayload, { rejectWithValue }) => {
+    try {
+      const res = await getPendingHospitals({ page, limit, search });
+      return res;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.error || "Failed to fetch");
+    }
+  }
+);
 // ✅ Fetch hospitals
 export const fetchHospitals = createAsyncThunk(
   "admin/fetchHospitals",
-  async ({ page = 1, limit = 10, search = ""  }: PaginationPayload, { rejectWithValue }) => {
+  async ({ page = 1, limit = 10, search = "" ,status }: PaginationPayload, { rejectWithValue }) => {
     try {
-      const response = await fetchHospitalsService({ page, limit, search });
-      return response; // Should return { hospitals: [...], total: number }
+      const response = await fetchHospitalsService({ page, limit, search,status });
+      console.log("respos-fetchhosp",response);
+      
+      return response; 
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || "Failed to fetch hospitals.");
     }
@@ -51,18 +68,35 @@ export const toggleHospitalBlock = createAsyncThunk(
   }
 );
 
-// ✅ Update hospital info
-// export const updateHospital = createAsyncThunk(
-//   "adminHospital/updateHospital",
-//   async (hospital: UpdateHospitalRequest, { rejectWithValue }) => {
-//     try {
-//       const response = await updateHospitalService(hospital);
-//       return response; // updated hospital
-//     } catch (error: any) {
-//       return rejectWithValue(error.response?.data?.message || "Failed to update hospital.");
-//     }
-//   }
-// );
+export const fetchHospitalById = createAsyncThunk(
+  "admin/fetchHospitalById",
+  async (hospitalId: string, { rejectWithValue }) => {
+    try {
+      const response = await getHospitalByIdService(hospitalId);
+      return response;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch hospital."
+      );
+    }
+  }
+);
+export const updateHospitalStatus = createAsyncThunk(
+  "admin/updateHospitalStatus",
+  async (
+    { hospitalId, newStatus }: { hospitalId: string; newStatus: "approved" | "rejected" },
+    { rejectWithValue }
+  ) => {
+    try {
+      const res = await updateHospitalStatusService(hospitalId, newStatus);
+      return res;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.message || "Failed to update status");
+    }
+  }
+);
+
+
 
 // ✅ Slice
 const adminHospitalSlice = createSlice({
@@ -103,24 +137,42 @@ const adminHospitalSlice = createSlice({
         state.loading = false;
         state.error = action.payload as string;
       })
+      .addCase(fetchPendingHospitals.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchPendingHospitals.fulfilled, (state, action) => {
+        state.loading = false;
+        state.hospitals = action.payload.hospitals;
+        state.total = action.payload.total;
+      })
+      .addCase(fetchPendingHospitals.rejected, (state) => {
+        state.loading = false;
+      })
+      .addCase(fetchHospitalById.pending, (state) => {
+  state.loading = true;
+  state.error = null;
+})
+.addCase(fetchHospitalById.fulfilled, (state, action) => {
+  state.loading = false;
+  state.selectedHospital = action.payload;
+})
+.addCase(fetchHospitalById.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload as string;
+})
+.addCase(updateHospitalStatus.pending, (state) => {
+  state.loading = true;
+  state.error = null;
+})
+.addCase(updateHospitalStatus.fulfilled, (state, action) => {
+  state.loading = false;
+  state.selectedHospital = action.payload;
+})
+.addCase(updateHospitalStatus.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.payload as string;
+})
 
-      // updateHospital
-    //   .addCase(updateHospital.pending, (state) => {
-    //     state.loading = true;
-    //     state.error = null;
-    //   })
-    //   .addCase(updateHospital.fulfilled, (state, action) => {
-    //     state.loading = false;
-    //     const updated = action.payload;
-    //     const index = state.hospitals.findIndex(h => h._id === updated._id);
-    //     if (index !== -1) {
-    //       state.hospitals[index] = updated;
-    //     }
-    //   })
-    //   .addCase(updateHospital.rejected, (state, action) => {
-    //     state.loading = false;
-    //     state.error = action.payload as string;
-    //   });
   },
 });
 

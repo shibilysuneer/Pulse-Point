@@ -102,7 +102,8 @@ const userSlice = createSlice({
       })
       .addCase(userLogin.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        state.user = action.payload.user;
+        state.accessToken = action.payload.accesstoken;
         state.message = "Login successful";
       })
       .addCase(userLogin.rejected, (state, action) => {

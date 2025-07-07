@@ -1,8 +1,9 @@
 import AdminAPI from "../../api/AdminAPI"
+import type { PaginationPayload } from "../../types/commonTypes";
 
 
-export const getAllDonors =async ()=>{
-    const response = await AdminAPI.get("/donors")
+export const getAllDonors =async ({page,limit,search}:PaginationPayload)=>{
+    const response = await AdminAPI.get("/donors",{  params: { page, limit,search },})
     return response.data;
 }
 

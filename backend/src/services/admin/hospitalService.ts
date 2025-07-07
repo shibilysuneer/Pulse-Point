@@ -11,11 +11,15 @@ export class HospitalService implements IHospitalService {
     @inject(TYPES.HospitalRepository) private hospitalRepository: IHospitalRepository
   ) {}
 
-  async fetchHospitals({ page, limit, search }: FetchHospitalParams): Promise<{ hospitals: IHospital[]; total: number }> {
+  async fetchHospitals({ page, limit, search,status  }: FetchHospitalParams): Promise<{ hospitals: IHospital[]; total: number }> {
     const filter: any = {};
-    if (search) {
-      filter.name = { $regex: search, $options: "i" };
-    }
+    if (status) {
+    filter.status = status; // ✅ status filter applied
+  }
+
+  if (search) {
+    filter.name = { $regex: search, $options: "i" };
+  }
 
     const hospitals = await this.hospitalRepository.findHospitals(filter, page, limit);
     const total = await this.hospitalRepository.countHospitals(filter);
@@ -30,9 +34,33 @@ export class HospitalService implements IHospitalService {
     return updated;
   }
 
-//   async updateHospital(hospitalId: string, updates: Partial<IHospital>): Promise<IHospital> {
-//     const updated = await this.hospitalRepository.findByIdAndUpdate(hospitalId, updates);
-//     if (!updated) throw new Error("Hospital not found");
-//     return updated;
-//   }
+   async getPendingHospitals({ page, limit, search }: FetchHospitalParams): Promise<{ hospitals: IHospital[]; total: number }> {
+    const filter: any = {};
+    // return this.hospitalRepository.getPendingHospitals({ page, limit, search });
+    if (search) {
+    filter.name = { $regex: search, $options: "i" };
+  }
+  if (search) {
+    filter.name = { $regex: search, $options: "i" };
+  }
+ const hospitals = await this.hospitalRepository.findHospitals(filter, page, limit);
+  const total = await this.hospitalRepository.countHospitals(filter);
+  return { hospitals, total };
+  }
+
+  async getHospitalById(id: string): Promise<IHospital> {
+  const hospital = await this.hospitalRepository.findById(id);
+  if (!hospital) {
+    throw new Error("Hospital not found");
+  }
+  return hospital;
+}
+
+async updateStatus(hospitalId: string, status: "approved" | "rejected"): Promise<IHospital> {
+  const updated = await this.hospitalRepository.findByIdAndUpdate(hospitalId, { status });
+  if (!updated) throw new Error("Hospital not found");
+  return updated;
+}
+
+
 }

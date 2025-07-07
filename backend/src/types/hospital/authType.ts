@@ -4,9 +4,9 @@ export interface HospitalSignupRequest {
   name: string;
   email: string;
   password: string;
-  phone?: string;
-  address?: string;
   registrationNumber?:string;
+  phone:string;
+  //  location?: IHospitalDocument['location']; 
 }
 
 export interface HospitalSignupResponse {
@@ -35,3 +35,20 @@ export interface HospitalGoogleLoginResponse {
   token: string;
 }
 
+export interface Address {
+  street: string;
+  city: string;
+  state: string;
+  zipCode: string;
+}
+
+export interface SubmitRegistrationDetailsRequest {
+  licenseNumber: string;
+  website?: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+  };
+}

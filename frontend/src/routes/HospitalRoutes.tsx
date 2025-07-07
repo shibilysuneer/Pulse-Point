@@ -12,6 +12,7 @@ import HospitalLayout from "../components/hospital/HospitalLayout";
 import DonorRequesters from "../pages/hospitalPages/DonorRequesters";
 import DonorDetails from "../pages/hospitalPages/DonorReqDetails";
 import HosDonors from "../pages/hospitalPages/HospitalDonors";
+import HospitalRegister from "../pages/hospitalPages/HospitalRegister";
 
 const HospitalRoutes = () => {
   return (
@@ -32,6 +33,7 @@ const HospitalRoutes = () => {
     <Route path="/donor-requests" element={<DonorRequesters />} />
      <Route path="/donor/:id" element={<DonorDetails />} />
      <Route path="/donor" element={<HosDonors />} />
+     <Route path="/register" element={<HospitalRegister/>} />
 
     </Route>
   </Route>

@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { fetchDonorRequests,hosToggleDonorBlock } from "../../redux/slices/hospital/reqDonorSlice";
+import { Pagination } from "antd";
+import usePagination from "../../hooks/usePagination";
 
 const HosDonors = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -11,15 +13,37 @@ const HosDonors = () => {
   const { donorRequests, loading } = useSelector(
     (state: RootState) => state.reqDonor
   );
+  const {
+  currentPage,
+  setCurrentPage,
+  pageSize,
+  search,
+  setSearch,
+} = usePagination();
+
 
   useEffect(() => {
     dispatch(fetchDonorRequests());
   }, [dispatch]);
 
   // Filter only approved donors
-  const approvedDonors = donorRequests?.filter(
-    (donor: any) => donor.status === "approved" 
-  );
+  // const approvedDonors = donorRequests?.filter(
+  //   (donor: any) => donor.status === "approved" 
+  // );
+  // ✅ Filter only approved
+  const approvedDonors = donorRequests
+    ?.filter((donor: any) => donor.status === "approved")
+    ?.filter((donor: any) =>
+      donor.username.toLowerCase().includes(search.toLowerCase()) ||
+      donor.location.toLowerCase().includes(search.toLowerCase()) ||
+      donor.bloodGroup.toLowerCase().includes(search.toLowerCase())
+    );
+
+  // ✅ Paginate filtered results
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedDonors = approvedDonors.slice(startIndex, endIndex);
+
 
   return (
     <div className="p-6">
@@ -32,6 +56,17 @@ const HosDonors = () => {
       ) : approvedDonors.length === 0 ? (
         <p className="text-center text-gray-500">No approved donors found.</p>
       ) : (
+        <>
+          {/* ✅ Search Input */}
+          <div className="mb-4 flex justify-center">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by name, location or blood group"
+              className="px-3 py-2 border rounded w-full max-w-md"
+            />
+          </div>
         <table className="w-full table-auto border text-sm shadow rounded">
           <thead className="bg-green-50">
             <tr>
@@ -45,7 +80,7 @@ const HosDonors = () => {
             </tr>
           </thead>
           <tbody>
-            {approvedDonors.map((donor: any) => (
+            {paginatedDonors.map((donor: any) => (
               <tr key={donor._id} className="text-center hover:bg-green-50 transition">
                 <td className="p-2 border">{donor.username}</td>
                 <td className="p-2 border">{donor.bloodGroup}</td>
@@ -78,6 +113,18 @@ const HosDonors = () => {
             ))}
           </tbody>
         </table>
+        
+          {/* ✅ Pagination Control */}
+          <div className="mt-4 flex justify-center">
+            <Pagination
+              current={currentPage}
+              pageSize={pageSize}
+              total={approvedDonors.length}
+              onChange={setCurrentPage}
+              showSizeChanger={false}
+            />
+          </div>
+        </>
       )}
     </div>
   );

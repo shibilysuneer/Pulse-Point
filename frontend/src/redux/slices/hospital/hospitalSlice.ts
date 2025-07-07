@@ -2,7 +2,8 @@ import { createAsyncThunk,createSlice } from "@reduxjs/toolkit";
 import type { GoogleLoginReq, LoginRequest, SignupHospitalRequest } from "../../../types/authTypes";
 import { loginHospital,signupHospital,logoutHospital,
   sendOtpHospital,resendOtpHospital,
-  verifyOtpHospital,verifyPasswordHospital
+  verifyOtpHospital,verifyPasswordHospital,
+  submitRegistrationDetailsHospital
  } from "../../../services/hospital/authService";
 // import {auth,googleProvider} from '../../../config/firebase'
 import { googleLoginHospital } from "../../../services/hospital/authService";
@@ -125,6 +126,33 @@ export const verifyPassword = createAsyncThunk(
     }
   }
 );
+export const submitRegistrationDetails = createAsyncThunk(
+  "hospital/registerDetails",
+  async (data: {
+    // hospitalId: string;
+    licenseNumber: string;
+    website: string;
+    address: {
+      street: string;
+      city: string;
+      state: string;
+      zipCode: string;
+    };
+  }, { rejectWithValue }) => {
+    console.log("data-registra",data);
+    
+    try {
+      const res = await submitRegistrationDetailsHospital(data);
+      console.log("registra_res:",res);
+      
+      return res;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data?.error || "Submission failed");
+    }
+  }
+);
+
+
 const hospitalSlice = createSlice({
   name: "hospital",
   initialState,
@@ -167,7 +195,7 @@ const hospitalSlice = createSlice({
       state.loading = false;
       state.hospital = action.payload;
       state.message = "Google login successful";
-      localStorage.setItem("hospitalToken", action.payload.token);
+      localStorage.setItem("hospital_token", action.payload.token);
       localStorage.setItem("hospitalInfo", JSON.stringify(action.payload.hospital));
     })
     .addCase(hospitalGoogleLogin.rejected, (state, action) => {
@@ -239,6 +267,13 @@ const hospitalSlice = createSlice({
   state.loading = false;
   state.error = action.payload as string;
 })
+
+.addCase(submitRegistrationDetails.fulfilled, (state, action) => {
+  state.loading = false;
+  state.hospital = action.payload;
+  state.message = "Registration submitted";
+})
+
 
   },
 });

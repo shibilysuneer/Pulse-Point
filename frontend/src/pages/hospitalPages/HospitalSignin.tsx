@@ -27,8 +27,8 @@ const HospitalSignin = () => {
     e.preventDefault();
     setError("");
     try {
-      const result = await dispatch(hospitalLogin(formData)).unwrap();
-      localStorage.setItem("hospitalToken", result.token);
+       await dispatch(hospitalLogin(formData)).unwrap();
+      // localStorage.setItem("hospitalToken", result.token);
       toast.success("Login successful");
        navigate("/hospital/home");
     } catch (error: any) {

@@ -11,7 +11,7 @@ type GenTokenPayload = {
   role: string;
 };
 export const generateToken = ({_id, role}: GenTokenPayload )  => {
-    return jwt.sign({ _id, role }, JWT_SECRET, {expiresIn: "15min"})
+    return jwt.sign({ _id, role }, JWT_SECRET, {expiresIn: "1h"})
 }
 export const generateRefreshToken = ({_id, role}: GenTokenPayload )  => {
     return jwt.sign({ _id, role }, JWT_REFRESH_SECRET, {expiresIn: "7d"})

@@ -3,6 +3,7 @@ import { inject, injectable } from "inversify";
 import { IHospitalController } from "./interface/IHospitalController";
 import TYPES from "../../config/inversify/types";
 import { IAuthService } from "../../services/hospital/interface/IAuthService";
+import { AuthRequest } from "../../types/common/middType";
 
 @injectable()
 export class HospitalController implements IHospitalController {
@@ -15,7 +16,7 @@ export class HospitalController implements IHospitalController {
   async hospitalSignup(req: Request, res: Response): Promise<void> {
     try {
       console.log("Received data:", req.body);
-      const { username, email, password ,registrationNumber} = req.body;
+      const { username, email, password ,registrationNumber,phone} = req.body;
 
       if (!username || !email || !password ||!registrationNumber) {
         res.status(400).json({ error: "All fields are required." });
@@ -27,6 +28,7 @@ export class HospitalController implements IHospitalController {
         email,
         password,
         registrationNumber,
+        phone
       });
 
       res.status(201).json(hospital);
@@ -46,7 +48,7 @@ export class HospitalController implements IHospitalController {
       }
 
       const {token,hospital } = await this.hospitalAuthService.login({ email, password });
-      res.status(200).json({ token,hospital  });
+      res.status(200).json({accesstoken: token,hospital  });
     } catch (error: any) {
       console.error("Login Error:", error);
       res.status(401).json({ error: error.message });
@@ -163,5 +165,36 @@ async sendOtp(req: Request, res: Response): Promise<void> {
       res.status(400).json({ error: error.message || "Failed to reset password." });
     }
   }
+
+
+  async submitRegistrationDetails(req: AuthRequest , res: Response): Promise<void> {
+  try {
+    // console.log("req.user?.id",req.hospital?.id);
+    
+    const hospitalId = req.user?.id;
+    console.log("hospitalId",hospitalId);
+    
+     if (!hospitalId) {
+      res.status(401).json({ error: "Unauthorized: missing hospital ID" });
+      return;
+    } 
+    const { licenseNumber, website, address } = req.body;
+
+    if (!licenseNumber || !address?.street || !address?.city || !address?.state || !address?.zipCode) {
+  throw new Error("All required fields must be filled.");
+}
+
+
+    const result = await this.hospitalAuthService.submitRegistrationDetails(
+      hospitalId,
+      { licenseNumber, website, address }
+    );
+
+    res.status(200).json(result);
+  } catch (error: any) {
+    console.error("Registration Details Error:", error);
+    res.status(500).json({ error: error.message || "Failed to submit details" });
+  }
+}
 
 }

@@ -20,9 +20,9 @@ export const adminLogin = createAsyncThunk(
     "admin/login",
     async(data:LoginRequest,{rejectWithValue})=>{
         try {
-            const admin =await loginAdmin(data);
+            const  { accesstoken, admin }  =await loginAdmin(data);
             console.log("loginAdmin response:", admin );
-            return admin ;
+            return  { accesstoken, admin }  ;
         } catch (error:any) {
           console.error("err", error);
                 const message = error.response?.data?.message || error.message || 'Login failed';
@@ -92,14 +92,23 @@ const adminSlice = createSlice({
       
     },extraReducers: (builder) => {
     builder
+//     .addCase(refreshAccessToken.fulfilled, (state, action) => {
+//   localStorage.setItem("admin_token", action.payload);
+//   state.token = action.payload;
+// })
       .addCase(adminLogin.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(adminLogin.fulfilled, (state, action) => {
+          const { accesstoken, admin } = action.payload;
         state.loading = false;
-        state.admin = action.payload;
+        state.admin = admin;
+        state.accessToken = accesstoken;
         state.message = "Login successful";
+          if (accesstoken) {
+        
+  }
       })
       .addCase(adminLogin.rejected, (state, action) => {
         state.loading = false;

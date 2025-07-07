@@ -28,4 +28,11 @@ export class DonorService implements IDonorService {
   async hosToggleBlockStatus(id: string, isBlocked: boolean): Promise<IDonor | null> {
       return await this.donorRepo.updateBlockStatus(id, isBlocked);
   }
+async getMyDonorRequest(userId: string): Promise<IDonor | null> {
+  return await this.donorRepo.getDonorRequestByUserId(userId);
+}
+async  cancelDonorRequest(requestId: string, userId: string): Promise<void> {
+  await this.donorRepo.cancelDonorRequest(requestId, userId);
+}
+
 }

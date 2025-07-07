@@ -6,6 +6,7 @@ import {
   HospitalLoginResponse,
   HospitalGoogleLoginRequest,
   HospitalGoogleLoginResponse,
+  SubmitRegistrationDetailsRequest
 } from '../../../types/hospital/authType';
 
 export interface IAuthService {
@@ -18,5 +19,6 @@ export interface IAuthService {
   resendOtp(email: string): Promise<{ message: string }>;
   verifyOtp(data: { email: string; otp: string }): Promise<{ message: string }>;
   resetPassword(data:{email: string, newPassword: string}): Promise<{ message: string }>;
+  submitRegistrationDetails(hospitalId: string,data: SubmitRegistrationDetailsRequest): Promise<{ message: string }>;
 
 }

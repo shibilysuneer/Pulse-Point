@@ -9,7 +9,7 @@ export const loginUser = async (data: UserLoginRequest) => {
   if (accesstoken && user) {
     localStorage.setItem("user_token", accesstoken);
     localStorage.setItem("user_role", user.role);
-    return user;
+    return { accesstoken, user };;
   }
 
   throw new Error("Invalid login response");

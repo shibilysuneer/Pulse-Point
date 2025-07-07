@@ -7,5 +7,7 @@ export interface IDonorRepository {
   getDonorById(id: string): Promise<IDonor | null>;
   updateDonorStatus(id: string, status: string): Promise<IDonor | null>;
   updateBlockStatus(id: string, isBlocked: boolean): Promise<IDonor | null>;
+  getDonorRequestByUserId(userId: string): Promise<IDonor | null>;
+  cancelDonorRequest(requestId: string, userId: string): Promise<void>;
 
 }

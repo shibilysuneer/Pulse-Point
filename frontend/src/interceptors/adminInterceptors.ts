@@ -6,8 +6,11 @@ import { refreshAccessToken } from "../redux/slices/admin/adminSlice";
 AdminAPI.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("admin_token");
+    console.log(" AdminAPI Interceptor- Attaching token:", token); 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }else {
+      console.warn("No token found in localStorage at request time!");
     }
     return config;
   },
@@ -34,7 +37,7 @@ AdminAPI.interceptors.response.use(
     } catch (refreshError) {
          console.error("Refresh token failed", refreshError);
         localStorage.removeItem("admin_token"); // ⬅️ Optional: Clear token on failure
-        window.location.href = "/admin/login"; // Redirect to login
+        window.location.href = "/admin/signin"; // Redirect to login
         return Promise.reject(refreshError);
     }
 }

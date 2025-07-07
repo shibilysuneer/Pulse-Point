@@ -3,6 +3,7 @@ import container from "../config/inversify/container";
 import TYPES from "../config/inversify/types";
 import { IUserController } from "../controllers/user/interface/IUserController";
 import { DonorController } from "../controllers/user/donorController";
+import { authenticateUser } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 
@@ -20,7 +21,11 @@ router.post("/resend-otp", userController.resendOtp.bind(userController));
 router.post("/verify-otp", userController.verifyOtp.bind(userController));
 router.post("/reset-password", userController.resetPassword.bind(userController));
 
-router.post("/donor-request", donorController.handleDonorRequest.bind(donorController));
+router.post("/donor-request", authenticateUser,donorController.handleDonorRequest.bind(donorController));
+router.get("/donor-request",authenticateUser, donorController.getMyDonorRequest.bind(donorController));
+router.patch("/donor-request/:id",authenticateUser,donorController.cancelDonorRequest.bind(donorController)
+);
+
 router.patch("/donor-requests/:id/status", donorController.updateDonorStatus.bind(donorController));
 
 export default router;

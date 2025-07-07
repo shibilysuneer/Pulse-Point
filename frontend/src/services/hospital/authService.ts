@@ -94,7 +94,30 @@ export const verifyPasswordHospital  = async(email:string, otp: string, password
     console.log("err",error);
   }
 }
-
+export const submitRegistrationDetailsHospital = async (data: {
+  licenseNumber: string;
+  website: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+  };
+}) => {
+  console.log("data",data);
+  
+  const token = localStorage.getItem("hospital_token");
+  console.log("token-authservice-regist",token);
+  
+  const response = await HospitalAPI.post("/register-details", data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+   console.log("respons-redistration",response);
+  return response.data;
+};
 
 // export const hospitalGoogleLogin = createAsyncThunk(
 //   'hospital/googleLogin',
