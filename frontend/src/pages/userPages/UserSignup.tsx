@@ -1,59 +1,152 @@
-import { useState, type ChangeEvent, type FormEvent } from 'react';
-import loginBg from '../../assets/bloodpulse.jpg';
+// import { useState, type ChangeEvent, type FormEvent } from 'react';
+// import loginBg from '../../assets/bloodpulse.jpg';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { toast } from 'react-toastify';
+// import { useNavigate, Link } from 'react-router-dom';
+// import { userSignup } from '../../redux/slices/user/userSlice';
+// import type { AppDispatch, RootState } from '../../redux/store';
+
+// function UserSignup() {
+//   const [formData, setFormData] = useState({
+//     username: '',
+//     email: '',
+//     password: '',
+//   });
+
+//   const [error, setError] = useState<string>('');
+//   const dispatch = useDispatch<AppDispatch>();
+//   const navigate = useNavigate();
+
+//   const { loading } = useSelector((state: RootState) => state.user);
+
+//   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+//     const { name, value } = e.target;
+//     setFormData(prev => ({ ...prev, [name]: value }));
+//   };
+
+//   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+//     setError('');
+
+//     const { username, email, password } = formData;
+
+//     if (!username || !email || !password ) {
+//       setError('All fields are required');
+//       return;
+//     }
+
+//     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+//     if (!emailRegex.test(email)) {
+//       setError('Invalid email format');
+//       return;
+//     }
+
+//     if (password.length < 6) {
+//       setError('Password must be at least 6 characters');
+//       return;
+//     }
+
+//     try {
+//       const result = await dispatch(userSignup(formData)).unwrap();
+//       console.log('Signup result:', result);
+//       toast.success('Signup successful');
+//       navigate('/user/home');
+//     } catch (err: any) {
+//       console.error('Signup error:', err);
+//       setError(err || 'Signup failed');
+//     }
+//   };
+
+//   return (
+//     <div
+//       className="min-h-screen bg-no-repeat bg-cover bg-center flex flex-col justify-between"
+//       style={{ backgroundImage: `url(${loginBg})` }}
+//     >
+//       <div className="flex justify-center items-center flex-grow pt-16">
+//         <form onSubmit={handleSubmit} className="bg-white bg-opacity-90 p-8 rounded-2xl shadow-lg w-full max-w-md">
+//           <h2 className="text-3xl font-bold text-red-600 mb-6 text-center">Signup</h2>
+//           {error && <p className="text-red-600 text-center mb-4">{error}</p>}
+
+//           <input
+//             type="text"
+//             name="username"
+//             value={formData.username}
+//             onChange={handleChange}
+//             placeholder="Name"
+//             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
+//           />
+
+//           <input
+//             type="email"
+//             name="email"
+//             value={formData.email}
+//             onChange={handleChange}
+//             placeholder="Email"
+//             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
+//           />
+
+//           <input
+//             type="password"
+//             name="password"
+//             value={formData.password}
+//             onChange={handleChange}
+//             placeholder="Password"
+//             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
+//           />
+
+
+//           <div className="flex justify-between text-sm mb-4 text-gray-600">
+//             <Link to="/user/signin" className="hover:underline text-black-600">
+//               Already have an account? Login
+//             </Link>
+//           </div>
+
+//           <button
+//             type="submit"
+//             disabled={loading}
+//             className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-full"
+//           >
+//             {loading ? 'Signing up...' : 'Signup'}
+//           </button>
+//         </form>
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default UserSignup;
+
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import { useNavigate, Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import loginBg from '../../assets/bloodpulse.jpg';
 import { userSignup } from '../../redux/slices/user/userSlice';
+import { userSignupSchema } from '../../validations/userValidation';
 import type { AppDispatch, RootState } from '../../redux/store';
 
 function UserSignup() {
-  const [formData, setFormData] = useState({
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const { loading } = useSelector((state: RootState) => state.user);
+
+  const initialValues = {
     username: '',
     email: '',
     password: '',
-  });
-
-  const [error, setError] = useState<string>('');
-  const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-
-  const { loading } = useSelector((state: RootState) => state.user);
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError('');
-
-    const { username, email, password } = formData;
-
-    if (!username || !email || !password ) {
-      setError('All fields are required');
-      return;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError('Invalid email format');
-      return;
-    }
-
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters');
-      return;
-    }
-
+  const handleSubmit = async (values: typeof initialValues) => {
     try {
-      const result = await dispatch(userSignup(formData)).unwrap();
+      const result = await dispatch(userSignup(values)).unwrap();
       console.log('Signup result:', result);
       toast.success('Signup successful');
       navigate('/user/home');
     } catch (err: any) {
       console.error('Signup error:', err);
-      setError(err || 'Signup failed');
+      const message =
+        err?.response?.data?.message || err?.message || 'Signup failed';
+      toast.error(message);
     }
   };
 
@@ -63,52 +156,69 @@ function UserSignup() {
       style={{ backgroundImage: `url(${loginBg})` }}
     >
       <div className="flex justify-center items-center flex-grow pt-16">
-        <form onSubmit={handleSubmit} className="bg-white bg-opacity-90 p-8 rounded-2xl shadow-lg w-full max-w-md">
-          <h2 className="text-3xl font-bold text-red-600 mb-6 text-center">Signup</h2>
-          {error && <p className="text-red-600 text-center mb-4">{error}</p>}
+        <Formik
+          initialValues={initialValues}
+          validationSchema={userSignupSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting }) => (
+            <Form className="bg-white bg-opacity-90 p-8 rounded-2xl shadow-lg w-full max-w-md">
+              <h2 className="text-3xl font-bold text-red-600 mb-6 text-center">
+                Signup
+              </h2>
 
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            placeholder="Name"
-            className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
-          />
+              <Field
+                type="text"
+                name="username"
+                placeholder="Name"
+                className="w-full px-4 py-3 mb-2 rounded-full border focus:outline-none"
+              />
+              <ErrorMessage
+                name="username"
+                component="div"
+                className="text-red-600 text-sm mb-2 text-center"
+              />
 
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-            className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
-          />
+              <Field
+                type="email"
+                name="email"
+                placeholder="Email"
+                className="w-full px-4 py-3 mb-2 rounded-full border focus:outline-none"
+              />
+              <ErrorMessage
+                name="email"
+                component="div"
+                className="text-red-600 text-sm mb-2 text-center"
+              />
 
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Password"
-            className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
-          />
+              <Field
+                type="password"
+                name="password"
+                placeholder="Password"
+                className="w-full px-4 py-3 mb-2 rounded-full border focus:outline-none"
+              />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className="text-red-600 text-sm mb-4 text-center"
+              />
 
+              <div className="flex justify-between text-sm mb-4 text-gray-600">
+                <Link to="/user/signin" className="hover:underline text-black-600">
+                  Already have an account? Login
+                </Link>
+              </div>
 
-          <div className="flex justify-between text-sm mb-4 text-gray-600">
-            <Link to="/user/signin" className="hover:underline text-black-600">
-              Already have an account? Login
-            </Link>
-          </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-full"
-          >
-            {loading ? 'Signing up...' : 'Signup'}
-          </button>
-        </form>
+              <button
+                type="submit"
+                disabled={loading || isSubmitting}
+                className="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-full"
+              >
+                {loading || isSubmitting ? 'Signing up...' : 'Signup'}
+              </button>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );

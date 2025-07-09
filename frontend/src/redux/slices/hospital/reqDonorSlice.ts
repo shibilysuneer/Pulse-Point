@@ -24,7 +24,13 @@ export const fetchDonorRequests = createAsyncThunk(
       const data = await getDonorRequests();
       return data;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || "Failed to fetch");
+      // return rejectWithValue(err.response?.data?.error || "Failed to fetch");
+       const message =
+        err?.response?.data?.error ||
+        err?.response?.data?.message ||
+        err.message ||
+        "Failed to fetch";
+      return rejectWithValue(message);
     }
   }
 );
@@ -82,6 +88,7 @@ const donorSlice = createSlice({
       .addCase(fetchDonorRequests.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.error = null; 
       })
        // Fetch Single Donor
       .addCase(fetchSingleDonor.pending, (state) => {

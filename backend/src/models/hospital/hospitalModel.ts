@@ -33,8 +33,7 @@ export const hospitalSchema:Schema<IHospitalDocument> = new Schema({
 
    address: AddressSchema,
     registrationNumber: {
-    type: String,
-    required: true, 
+    type: String, 
   },
    role: {
     type: String,
@@ -51,8 +50,6 @@ export const hospitalSchema:Schema<IHospitalDocument> = new Schema({
       enum:['unregistered', 'pending', 'approved', 'rejected'],
       default:'unregistered'
     },
-    
-  
 }, { timestamps: true });
 hospitalSchema.index({ location: '2dsphere' });
 

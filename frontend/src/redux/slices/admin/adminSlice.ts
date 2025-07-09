@@ -25,7 +25,7 @@ export const adminLogin = createAsyncThunk(
             return  { accesstoken, admin }  ;
         } catch (error:any) {
           console.error("err", error);
-                const message = error.response?.data?.message || error.message || 'Login failed';
+                const message = error.response?.data?.error || error.message || 'Login failed';
             return rejectWithValue(message)
         }
     }

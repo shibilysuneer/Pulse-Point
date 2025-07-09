@@ -21,10 +21,13 @@ UserAPI.interceptors.request.use((config) => {
 UserAPI.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === HttpStatus.UNAUTHORIZED) {   //401
-      // Clear the expired token
+     const originalRequestUrl = error.config?.url || '';
+         console.log('❗ Axios interceptor caught error for:', originalRequestUrl);
+    if (error.response?.status === HttpStatus.UNAUTHORIZED && //401
+       !originalRequestUrl.includes('/login'))
+       { 
       localStorage.removeItem('user_token');
-      // Redirect to login page or show a message
+     
       window.location.href = '/user/signin'; 
     }
     return Promise.reject(error);

@@ -21,7 +21,6 @@ const DonorRequesters = () => {
     pageSize,
     search,
   setSearch,
-  // resetPage
   } = usePagination();
 
   useEffect(() => {
@@ -35,7 +34,7 @@ const DonorRequesters = () => {
 //   const handleStatusUpdate = (id: string, status: "approved" | "rejected") => {
 //     dispatch(changeDonorStatus({ id, status }));
 //   };
- // ✅ Add this before pagination slicing
+ //  Add this before pagination slicing
 const filteredDonors = donorRequests.filter((donor: any) =>
   donor.username.toLowerCase().includes(search.toLowerCase()) ||
   donor.location.toLowerCase().includes(search.toLowerCase())||
@@ -43,7 +42,7 @@ const filteredDonors = donorRequests.filter((donor: any) =>
 
 );
 
-// ✅ Then paginate the filtered list
+// Then paginate the filtered list
 const startIndex = (currentPage - 1) * pageSize;
 const endIndex = startIndex + pageSize;
 const paginatedDonors = filteredDonors.slice(startIndex, endIndex);
@@ -64,7 +63,7 @@ const paginatedDonors = filteredDonors.slice(startIndex, endIndex);
     type="text"
     value={search}
     onChange={(e) => setSearch(e.target.value)}
-    placeholder="Search by name or location"
+    placeholder="Search by name or location or bloodgroup"
     className="px-3 py-2 border rounded w-full max-w-md"
   />
 </div>

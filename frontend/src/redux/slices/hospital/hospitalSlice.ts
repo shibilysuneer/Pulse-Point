@@ -47,8 +47,10 @@ export const hospitalSignup = createAsyncThunk(
     try {
       const response = await signupHospital(data);
       console.log("signupHospital response:", response);
+
       localStorage.setItem('hospital_token', response.accesstoken);
       localStorage.setItem('hospital_role', 'hospital');
+      
       return response;
     } catch (error: any) {
       console.error("err", error);

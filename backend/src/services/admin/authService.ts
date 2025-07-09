@@ -55,7 +55,7 @@ if (admin.role !== "admin") {
        const accessToken = jwt.sign(
         { _id: admin._id, role: admin.role },
         process.env.JWT_SECRET!,
-        { expiresIn: "15min" }
+        { expiresIn: "1h" }
       );
       return {  token: accessToken};
       // return { token: JSON.stringify(decoded) };

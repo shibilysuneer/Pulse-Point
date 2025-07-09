@@ -7,6 +7,7 @@ export interface IUser {
   role: string;
   isGoogleAuth?: boolean;  
   createdAt?: Date;  
+  // isBlocked: boolean;
 }
 
 export interface IUserDocument extends IUser, Document {

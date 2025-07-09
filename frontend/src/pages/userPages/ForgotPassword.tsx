@@ -42,6 +42,10 @@ const ForgotUserPassword = () => {
 
   const handleSendOtp = () => {
     if (!email.trim()) return setError("Email is required");
+     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email.trim())) {
+    return setError("Invalid email format");
+  }
     setError("");
     dispatch(sendUserOTP(email)).then((res: any) => {
       if (res.payload?.message) {
@@ -57,6 +61,10 @@ const ForgotUserPassword = () => {
 
   const handleVerifyOtp = () => {
     if (!otp.trim()) return setError("OTP is required");
+    const otpRegex = /^\d{6}$/;
+  if (!otpRegex.test(otp.trim())) {
+    return setError("OTP must be 6 digits");
+  }
     setError("");
     dispatch(verifyUserOTP({ email, otp })).then((res: any) => {
       if (res.error) {

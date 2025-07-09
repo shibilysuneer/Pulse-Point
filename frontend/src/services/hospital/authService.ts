@@ -5,15 +5,7 @@ export const loginHospital = async (data: LoginRequest) => {
   const response = await HospitalAPI.post("/login", data);
   console.log("res-loginhospital:", response);
  return response.data; 
-  // const { accesstoken, hospital } = response.data;
-
-  // if (accesstoken && hospital) {
-  //   localStorage.setItem("hospital_token", accesstoken);
-  //   localStorage.setItem("hospital_role", hospital.role); // assuming hospital has a role
-  //   return hospital;
-  // }
-
-  // throw new Error("Invalid hospital login response");
+  
 };
 
 export const signupHospital = async (data: SignupHospitalRequest) => {
@@ -24,14 +16,6 @@ export const signupHospital = async (data: SignupHospitalRequest) => {
   });
 
   console.log("res-signuphospital:", response);
-
-  // const { accesstoken, hospital } = response.data;
-
-  // if (accesstoken && hospital) {
-  //   localStorage.setItem("hospital_token", accesstoken);
-  //   localStorage.setItem("hospital_role", hospital.role);
-  //   return hospital;
-  // }
 return response.data;
   // throw new Error("Invalid hospital signup response");
 };
@@ -41,11 +25,6 @@ export const logoutHospital = async () => {
   const response = await HospitalAPI.post("/logout");
 
   console.log("res-logout-hospital:", response);
-
-  // // Clear token from local storage
-  // localStorage.removeItem("hospital_token");
-  // localStorage.removeItem("hospital_role");
-
   return response.data;
 };
 export const googleLoginHospital = async (data: GoogleLoginReq) => {

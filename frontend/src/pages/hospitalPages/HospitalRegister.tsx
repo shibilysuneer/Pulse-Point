@@ -75,7 +75,7 @@ console.log(hospital?._id);
         <Form.Item
           label="Hospital Name"
           name="name"
-          rules={[{ required: true, message: "Please enter hospital name" }]}
+          rules={[{ required: true, message: "Please enter hospital name"} ]}
         >
           <Input />
         </Form.Item>
@@ -83,7 +83,7 @@ console.log(hospital?._id);
         <Form.Item
           label="Email"
           name="email"
-          rules={[{ required: true, message: "Please enter email" }]}
+          rules={[{ required: true, message: "Please enter email" },{ type: 'email', message: 'Please enter a valid email'}]}
         >
           <Input />
         </Form.Item>
@@ -99,7 +99,7 @@ console.log(hospital?._id);
         <Form.Item
           label="Phone"
           name="phone"
-          rules={[{ required: true, message: "Please enter phone number" }]}
+          rules={[{ required: true, message: "Please enter phone number" },{ pattern: /^\d{10}$/, message: "Phone must be 10 digits" }]}
         >
           <Input />
         </Form.Item>
@@ -107,7 +107,7 @@ console.log(hospital?._id);
         <Form.Item
           label="License Number"
           name="licenseNumber"
-          rules={[{ required: true, message: "Please enter license number" }]}
+          rules={[{ required: true, message: "Please enter license number" }, { min: 4, message: "License number must be at least 4 characters" }]}
         >
           <Input />
         </Form.Item>
@@ -144,7 +144,7 @@ console.log(hospital?._id);
           <Form.Item
             label="Zip Code"
             name={['address', 'zipCode']}
-            rules={[{ required: true, message: "Please enter zip code" }]}
+            rules={[{ required: true, message: "Please enter zip code" }, { pattern: /^\d{6}$/, message: "Zip code must be 6 digits" }]}
           >
             <Input />
           </Form.Item>

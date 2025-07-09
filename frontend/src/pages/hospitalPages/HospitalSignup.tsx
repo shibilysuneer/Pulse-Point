@@ -1,120 +1,255 @@
-// import React from 'react'
-import { useState, type ChangeEvent, type FormEvent } from 'react';
-import loginBg from '../../assets/bloodpulse.jpg'; 
+// // import React from 'react'
+// import { useState, type ChangeEvent, type FormEvent } from 'react';
+// import loginBg from '../../assets/bloodpulse.jpg'; 
+// import { useDispatch, useSelector } from 'react-redux';
+// import type { AppDispatch, RootState } from '../../redux/store';
+// import { Link, useNavigate } from 'react-router-dom';
+// import { toast } from 'react-toastify';
+// import { hospitalSignup } from '../../redux/slices/hospital/hospitalSlice';
+
+// const HospitalSignup = () => {
+//     const [formData, setFormData] = useState({
+//     username: '',
+//     email: '',
+//     password: '',
+//     phone: '',
+//     registrationNumber: '',
+//   });
+//    const [error, setError] = useState<string>('');
+//   const dispatch = useDispatch<AppDispatch>();
+//   const navigate = useNavigate();
+//    const { loading } = useSelector((state: RootState) => state.hospital);
+
+//     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({ ...prev, [name]: value }));
+//   };
+//    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+//     e.preventDefault();
+//     setError('');
+//     try {
+//        await dispatch(hospitalSignup(formData)).unwrap();
+//       // localStorage.setItem('hospitalToken', result.token);
+//       toast.success('Signup successful');
+//       navigate('/hospital/home');
+//     } catch (error:any) {
+//       //  setError('Signup failed. Please try again.');
+//        const errorMessage =
+//        error?.response?.data?.message || error?.message || 'Signup failed. Please try again.';
+      
+//     setError(errorMessage); // Optional: shows under the form
+//     toast.error(errorMessage);
+
+//     }
+
+//    }
+//   return (
+//     <div
+//       className="min-h-screen bg-no-repeat bg-cover bg-center flex flex-col justify-between"
+//       style={{ backgroundImage: `url(${loginBg})` }}
+//     >
+//       <div className="flex justify-center items-center flex-grow pt-16">
+//         {/* <div className="bg-white bg-opacity-90 p-8 rounded-2xl shadow-lg w-full max-w-md"> */}
+//          <form
+//           onSubmit={handleSubmit}
+//           className="bg-white bg-opacity-90 p-8 rounded-2xl shadow-lg w-full max-w-md"
+//         >
+//           <h2 className="text-3xl font-bold text-red-600 mb-6 text-center">Hospital Sign Up</h2>
+//                     {error && <p className="text-red-600 text-center mb-4">{error}</p>}
+
+//           <input
+//             type="text"
+//             placeholder="Hospital Name"
+//              name="username"
+//             value={formData.username}
+//             onChange={handleChange}
+//             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
+//           />
+          
+//           <input
+//             type="email"
+//             placeholder="Email"
+//             name="email"
+//             value={formData.email}
+//             onChange={handleChange}
+//             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
+//           />
+//           <input
+//             type="password"
+//             placeholder="Password"
+//             name="password"
+//             value={formData.password}
+//             onChange={handleChange}
+//             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
+//           />
+//            <input
+//             type="text"
+//             placeholder="Phone"
+//             name="phone"
+//             value={formData.phone}
+//             onChange={handleChange}
+//             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
+//           />
+
+//           <input
+//             type="text"
+//             placeholder="Registration Number"
+//             name="registrationNumber"
+//             value={formData.registrationNumber}
+//             onChange={handleChange}
+//             className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
+//           />
+//           <div className="flex justify-between text-sm mb-4 text-gray-600">
+//             {/* <a href="/hospital/signin">Already have an account?Sign in</a> */}
+//              <Link to="/hospital/signin" className="text-black-600">
+//               Already have an account?
+//             </Link>
+//           </div>
+          
+//           <button type="submit"
+//             disabled={loading} className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-full">
+//            {loading ? 'Signing up...' : 'Signup'}
+//           </button>
+//         {/* </div> */}
+//         </form>
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default HospitalSignup
+
+
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from '../../redux/store';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { hospitalSignup } from '../../redux/slices/hospital/hospitalSlice';
+import { hospitalSignupSchema } from '../../validations/hospitalValidation';
+import loginBg from '../../assets/bloodpulse.jpg';
+import type { AppDispatch, RootState } from '../../redux/store';
 
 const HospitalSignup = () => {
-    const [formData, setFormData] = useState({
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const { loading } = useSelector((state: RootState) => state.hospital);
+
+  const initialValues = {
     username: '',
     email: '',
     password: '',
     phone: '',
     registrationNumber: '',
-  });
-   const [error, setError] = useState<string>('');
-  const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-   const { loading } = useSelector((state: RootState) => state.hospital);
-
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
   };
-   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError('');
+
+  const handleSubmit = async (values: typeof initialValues) => {
     try {
-       await dispatch(hospitalSignup(formData)).unwrap();
-      // localStorage.setItem('hospitalToken', result.token);
+      await dispatch(hospitalSignup(values)).unwrap();
       toast.success('Signup successful');
       navigate('/hospital/home');
-    } catch (error:any) {
-      //  setError('Signup failed. Please try again.');
-       const errorMessage =
-       error?.response?.data?.message || error?.message || 'Signup failed. Please try again.';
-      
-    setError(errorMessage); // Optional: shows under the form
-    toast.error(errorMessage);
-
+    } catch (error: any) {
+      const errorMessage =
+        error?.response?.data?.message || error?.message || 'Signup failed. Please try again.';
+      toast.error(errorMessage);
     }
+  };
 
-   }
   return (
     <div
       className="min-h-screen bg-no-repeat bg-cover bg-center flex flex-col justify-between"
       style={{ backgroundImage: `url(${loginBg})` }}
     >
       <div className="flex justify-center items-center flex-grow pt-16">
-        {/* <div className="bg-white bg-opacity-90 p-8 rounded-2xl shadow-lg w-full max-w-md"> */}
-         <form
+        <Formik
+          initialValues={initialValues}
+          validationSchema={hospitalSignupSchema}
           onSubmit={handleSubmit}
-          className="bg-white bg-opacity-90 p-8 rounded-2xl shadow-lg w-full max-w-md"
         >
-          <h2 className="text-3xl font-bold text-red-600 mb-6 text-center">Hospital Sign Up</h2>
-                    {error && <p className="text-red-600 text-center mb-4">{error}</p>}
+          {({ isSubmitting }) => (
+            <Form className="bg-white bg-opacity-90 p-8 rounded-2xl shadow-lg w-full max-w-md">
+              <h2 className="text-3xl font-bold text-red-600 mb-6 text-center">
+                Hospital Sign Up
+              </h2>
 
-          <input
-            type="text"
-            placeholder="Hospital Name"
-             name="username"
-            value={formData.username}
-            onChange={handleChange}
-            className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
-          />
-          
-          <input
-            type="email"
-            placeholder="Email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
-          />
-           <input
-            type="text"
-            placeholder="Phone"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
-          />
+              <Field
+                type="text"
+                name="username"
+                placeholder="Hospital Name"
+                className="w-full px-4 py-3 mb-2 rounded-full border focus:outline-none"
+              />
+              <ErrorMessage
+                name="username"
+                component="div"
+                className="text-red-600 text-sm mb-2"
+              />
 
-          <input
-            type="text"
-            placeholder="Registration Number"
-            name="registrationNumber"
-            value={formData.registrationNumber}
-            onChange={handleChange}
-            className="w-full px-4 py-3 mb-4 rounded-full border focus:outline-none"
-          />
-          <div className="flex justify-between text-sm mb-4 text-gray-600">
-            {/* <a href="/hospital/signin">Already have an account?Sign in</a> */}
-             <Link to="/hospital/signin" className="text-black-600">
-              Already have an account?
-            </Link>
-          </div>
-          
-          <button type="submit"
-            disabled={loading} className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-full">
-           {loading ? 'Signing up...' : 'Signup'}
-          </button>
-        {/* </div> */}
-        </form>
+              <Field
+                type="email"
+                name="email"
+                placeholder="Email"
+                className="w-full px-4 py-3 mb-2 rounded-full border focus:outline-none"
+              />
+              <ErrorMessage
+                name="email"
+                component="div"
+                className="text-red-600 text-sm mb-2"
+              />
+
+              <Field
+                type="password"
+                name="password"
+                placeholder="Password"
+                className="w-full px-4 py-3 mb-2 rounded-full border focus:outline-none"
+              />
+              <ErrorMessage
+                name="password"
+                component="div"
+                className="text-red-600 text-sm mb-2"
+              />
+
+              <Field
+                type="text"
+                name="phone"
+                placeholder="Phone"
+                className="w-full px-4 py-3 mb-2 rounded-full border focus:outline-none"
+              />
+              <ErrorMessage
+                name="phone"
+                component="div"
+                className="text-red-600 text-sm mb-2"
+              />
+
+              <Field
+                type="text"
+                name="registrationNumber"
+                placeholder="Registration Number"
+                className="w-full px-4 py-3 mb-2 rounded-full border focus:outline-none"
+              />
+              <ErrorMessage
+                name="registrationNumber"
+                component="div"
+                className="text-red-600 text-sm mb-4"
+              />
+
+              <div className="flex justify-between text-sm mb-4 text-gray-600">
+                <Link to="/hospital/signin" className="text-black-600">
+                  Already have an account?
+                </Link>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading || isSubmitting}
+                className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-full"
+              >
+                {loading || isSubmitting ? 'Signing up...' : 'Signup'}
+              </button>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HospitalSignup
+export default HospitalSignup;

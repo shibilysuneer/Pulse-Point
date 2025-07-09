@@ -23,7 +23,7 @@ export class HospitalController implements IHospitalController {
         return;
       }
 
-      const hospital = await this.hospitalAuthService.signup({
+      const {hospital,token} = await this.hospitalAuthService.signup({
        name: username,
         email,
         password,
@@ -31,7 +31,7 @@ export class HospitalController implements IHospitalController {
         phone
       });
 
-      res.status(201).json(hospital);
+      res.status(201).json({ accesstoken: token, hospital });
     } catch (error: any) {
       console.error("Signup Error:", error);
       res.status(400).json({ error: error.message });
@@ -41,12 +41,10 @@ export class HospitalController implements IHospitalController {
   async hospitalLogin(req: Request, res: Response): Promise<void> {
     try {
       const { email, password } = req.body;
-
-      if (!email || !password) {
-        res.status(400).json({ error: "Email and password are required." });
-        return;
-      }
-
+      // if (!email || !password) {
+      //   res.status(400).json({ error: "Email and password are required." });
+      //   return;
+      // }
       const {token,hospital } = await this.hospitalAuthService.login({ email, password });
       res.status(200).json({accesstoken: token,hospital  });
     } catch (error: any) {

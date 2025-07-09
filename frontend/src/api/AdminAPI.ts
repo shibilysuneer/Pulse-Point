@@ -37,40 +37,14 @@ AdminAPI.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// AdminAPI.interceptors.response.use(
-// (response) => response,
-//   async (error) => {
-//     const originalRequest = error.config;
-
-//      if (error.response?.status === 401 && !(originalRequest as any)._retry) {
-//       originalRequest._retry = true;
-//     try {
-//          const refreshResult = await store.dispatch(refreshAccessToken());
-//         const newToken = refreshResult.payload;
-
-//         if (refreshResult.meta.requestStatus === "fulfilled") {
-//           localStorage.setItem("admin_token", newToken); // ⬅️ Save to localStorage
-//           originalRequest.headers.Authorization = `Bearer ${newToken}`;
-//           return AdminAPI(originalRequest); // Retry with new token
-//         } else {
-//           throw new Error("Token refresh failed");
-//         }
-//     } catch (refreshError) {
-//          console.error("Refresh token failed", refreshError);
-//         localStorage.removeItem("admin_token"); // ⬅️ Optional: Clear token on failure
-//         window.location.href = "/admin/login";
-//         return Promise.reject(refreshError);
-//     }
-// }
-//  return Promise.reject(error);
-
-//   }
-// );
 // RESPONSE INTERCEPTOR
 AdminAPI.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const requestUrl = originalRequest?.url || '';
+
+    const isAuthRoute = requestUrl.includes('/login') || requestUrl.includes('/signup');
 
     if (error.response?.status === HttpStatus.UNAUTHORIZED && !_refreshTokenHandler) {
       console.error("No refresh token handler is set! Cannot refresh token.");
@@ -78,7 +52,7 @@ AdminAPI.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry &&!isAuthRoute) {
       originalRequest._retry = true;
       try {
         // Call injected refresh handler

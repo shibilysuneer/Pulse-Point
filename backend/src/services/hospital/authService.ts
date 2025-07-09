@@ -71,7 +71,7 @@ export class HospitalAuthService implements IAuthService {
 
     const isMatch = await bcrypt.compare(password, hospital.password!);
     if (!isMatch) {
-      throw new Error("Invalid password");
+      throw new Error("Invalid credential");
     }
 
     const token = generateToken({

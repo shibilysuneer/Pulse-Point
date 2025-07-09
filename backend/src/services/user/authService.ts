@@ -20,6 +20,8 @@ import { IUserRepository } from '../../repositories/user/interface/IUserReposito
 import { IUserAuthService } from './interface/IAuthService';
 import { OTPModel } from '../../models/user/otpModel';
 import { IUserDocument } from '../../models/user/interface/userInterface';
+// import { DonorRepository } from '../../repositories/user/donorRepository';
+import DonorRequester from '../../models/user/donorModel';
 
 @injectable()
 export class UserAuthService implements IUserAuthService {
@@ -63,11 +65,14 @@ export class UserAuthService implements IUserAuthService {
     if (!user) {
       throw new Error('User not found');
     }
-
     const isMatch = await bcrypt.compare(password, user.password!);
     if (!isMatch) {
-      throw new Error('Invalid password');
+      throw new Error('Invalid credential');
     }
+    const donor = await DonorRequester.findOne({ user: user._id });
+  if (donor?.isBlocked) {
+    throw new Error('Your donor account has been blocked .');
+  }
 
     const token = generateToken({
       _id: user._id.toString(),
